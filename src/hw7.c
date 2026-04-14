@@ -12,11 +12,38 @@ void free_bst_sf(bst_sf *root) {
 }
 
 matrix_sf* add_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
-    return NULL;
+    if(mat1->num_rows != mat2->num_rows || mat1->num_cols != mat2->num_cols){
+        return NULL;
+    }
+    matrix_sf* result = copy_matrix(mat1->num_rows, mat1->num_cols, mat1->values);
+    for(int i = 0; i < (mat1->num_rows)*(mat1->num_cols);i++){
+        *(result->values + i) += *(mat2->values + i);
+    }
+    return result;
 }
 
 matrix_sf* mult_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
-   return NULL;
+    if(mat1->num_cols != mat2->num_rows){
+        return NULL;
+    }
+    matrix_sf* result = malloc(sizeof(matrix_sf)+mat1->num_rows*mat2->num_cols*sizeof(int));
+    if(result == NULL){
+        return NULL;
+    }
+    result->name = '?';
+    result->num_rows = mat1->num_rows;
+    result->num_cols = mat2->num_cols;
+    memset(result->values, 0, mat1->num_rows*mat2->num_cols*sizeof(int));
+    for(int i = 0; i < mat1->num_rows; i++){
+        for(int j = 0; j < mat2->num_cols; j++){
+            for(int k = 0; k < mat1->num_cols;k++){
+                int mat1Val = *(mat1->values + i*mat1->num_cols + k);
+                int mat2Val = *(mat2->values + k * mat2->num_cols + j);
+                *(result->values + i * mat2->num_cols + j) += mat1Val * mat2Val;
+            }
+        }
+    }
+   return result;
 }
 
 matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
@@ -43,6 +70,9 @@ matrix_sf *execute_script_sf(char *filename) {
 // the assignment. Feel equally free to ignore it.
 matrix_sf *copy_matrix(unsigned int num_rows, unsigned int num_cols, int values[]) {
     matrix_sf *m = malloc(sizeof(matrix_sf)+num_rows*num_cols*sizeof(int));
+    if(m == NULL){
+        return NULL;
+    }
     m->name = '?';
     m->num_rows = num_rows;
     m->num_cols = num_cols;
