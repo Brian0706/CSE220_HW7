@@ -47,7 +47,20 @@ matrix_sf* mult_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
 }
 
 matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
-    return NULL;
+    matrix_sf* result = malloc(sizeof(matrix_sf)+mat->num_rows*mat->num_cols*sizeof(int));
+    if(result == NULL){
+        return NULL;
+    }
+    result->name = '?';
+    result->num_rows = mat->num_cols;
+    result->num_cols = mat->num_rows;
+    memset(result->values, 0, mat->num_rows*mat->num_cols*sizeof(int));
+    for(int i = 0; i < mat->num_rows; i++){
+        for(int j = 0; j < mat->num_cols;j++){
+            *(result->values+j*result->num_cols+i) = *(mat->values+i*mat->num_cols+j);
+        }
+    }
+    return result;
 }
 
 matrix_sf* create_matrix_sf(char name, const char *expr) {
