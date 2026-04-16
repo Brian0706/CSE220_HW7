@@ -70,7 +70,7 @@ matrix_sf* add_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
         return NULL;
     }
     matrix_sf* result = copy_matrix(mat1->num_rows, mat1->num_cols, mat1->values);
-    for(int i = 0; i < (mat1->num_rows)*(mat1->num_cols);i++){
+    for(unsigned int i = 0; i < (mat1->num_rows)*(mat1->num_cols);i++){
         *(result->values + i) += *(mat2->values + i);
     }
     return result;
@@ -88,9 +88,9 @@ matrix_sf* mult_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
     result->num_rows = mat1->num_rows;
     result->num_cols = mat2->num_cols;
     memset(result->values, 0, mat1->num_rows*mat2->num_cols*sizeof(int));
-    for(int i = 0; i < mat1->num_rows; i++){
-        for(int j = 0; j < mat2->num_cols; j++){
-            for(int k = 0; k < mat1->num_cols;k++){
+    for(unsigned int i = 0; i < mat1->num_rows; i++){
+        for(unsigned int j = 0; j < mat2->num_cols; j++){
+            for(unsigned int k = 0; k < mat1->num_cols;k++){
                 int mat1Val = *(mat1->values + i*mat1->num_cols + k);
                 int mat2Val = *(mat2->values + k * mat2->num_cols + j);
                 *(result->values + i * mat2->num_cols + j) += mat1Val * mat2Val;
@@ -109,8 +109,8 @@ matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
     result->num_rows = mat->num_cols;
     result->num_cols = mat->num_rows;
     memset(result->values, 0, mat->num_rows*mat->num_cols*sizeof(int));
-    for(int i = 0; i < mat->num_rows; i++){
-        for(int j = 0; j < mat->num_cols;j++){
+    for(unsigned int i = 0; i < mat->num_rows; i++){
+        for(unsigned  int j = 0; j < mat->num_cols;j++){
             *(result->values+j*result->num_cols+i) = *(mat->values+i*mat->num_cols+j);
         }
     }
@@ -118,14 +118,14 @@ matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
 }
 
 matrix_sf* create_matrix_sf(char name, const char *expr) {
-    char* pointer = expr;
-    int num_rows = strtol(expr, &pointer, 10);
+    const char* pointer = expr;
+    unsigned int num_rows = strtol(expr, (char **) &pointer, 10);
     expr = pointer;
     while(*expr == ' '){
         expr++;
     };
     pointer = expr;
-    int num_cols = strtol(expr, &pointer, 10);
+    unsigned int num_cols = strtol(expr, (char **) &pointer, 10);
     expr = pointer;
     matrix_sf* matrix = malloc(sizeof(matrix_sf)+num_rows*num_cols*sizeof(int));
     (matrix->name) = name;
@@ -136,8 +136,8 @@ matrix_sf* create_matrix_sf(char name, const char *expr) {
         expr++;
     };
     pointer = expr;
-    for(int i = 0; i < num_rows * num_cols; i++){
-        long num = strtol(expr, &pointer, 10);
+    for(unsigned int i = 0; i < num_rows * num_cols; i++){
+        long num = strtol(expr, (char **) &pointer, 10);
         *(matrix->values+i) = (int) num;
         expr = pointer;
         while(*expr == ' ' || *expr == ';'){
@@ -186,7 +186,7 @@ char* infix2postfix_sf(char *infix) {
                 *++operationPointer = *infix++;
                 break;
             case ' ':
-                *infix++;
+                infix++;
                 break;
             default:
                 *pointer++ = *infix++;
@@ -206,6 +206,7 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
     matrix_sf* operand1;
     matrix_sf* operand2;
     matrix_sf* transposed;
+    matrix_sf* matrix;
     while(*postfix){
         switch(*postfix){
             case '\'':
@@ -230,11 +231,13 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
                 *matrixPointer = product;
                 break;
             default:
-                matrix_sf* matrix = find_bst_sf(*postfix, root);
+                matrix = find_bst_sf(*postfix, root);
                 *++matrixPointer = matrix;
+                break;
         }
         postfix++;
     }
+    (*matrices)->name = name;
     return *matrices;
 }
 
@@ -267,7 +270,7 @@ matrix_sf *execute_script_sf(char *filename) {
 
 // This is a utility function used during testing. Feel free to adapt the code to implement some of
 // the assignment. Feel equally free to ignore it.
-matrix_sf *copy_matrix(unsigned int num_rows, unsigned int num_cols, int values[]) {
+matrix_sf *copy_matrix(unsigned int num_rows, unsigned int num_cols, const int values[]) {
     matrix_sf *m = malloc(sizeof(matrix_sf)+num_rows*num_cols*sizeof(int));
     if(m == NULL){
         return NULL;

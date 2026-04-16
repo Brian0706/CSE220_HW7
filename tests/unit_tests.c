@@ -448,11 +448,11 @@ Test(base_evaluate_expr, expr03, .description="Given root of a tree, evaluation 
     expect_matrices_equal(result, 4, 3, (int[]){-11171376, 56535582, 3236371, 69463160, -416294603, -47900609, 76095851, -459940949, -56668593, 60848961, -362841916, -37213021});
 }
 
-// /* execute_script_sf tests */
-// // 1. call execute_script_sf() to check for correctness()
-// // 2. call execute_script_sf() via valgrind to check for memory errors
-// Test(base_execute, add_mats01) { run_script_without_valgrind("script01"); }
-// Test(base_execute_valgrind, add_mats01) { expect_no_valgrind_errors(run_script_with_valgrind("script01")); }
+/* execute_script_sf tests */
+// 1. call execute_script_sf() to check for correctness()
+// 2. call execute_script_sf() via valgrind to check for memory errors
+Test(base_execute, add_mats01) { run_script_without_valgrind("script01"); }
+Test(base_execute_valgrind, add_mats01) { expect_no_valgrind_errors(run_script_with_valgrind("script01")); }
 
 // Test(base_execute, add_mats02) { run_script_without_valgrind("script02"); }
 // Test(base_execute_valgrind, add_mats02) { expect_no_valgrind_errors(run_script_with_valgrind("script02")); }
