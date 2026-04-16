@@ -239,6 +239,12 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
 }
 
 matrix_sf *execute_script_sf(char *filename) {
+    FILE * script = fopen(filename,"r");
+    if(script == NULL){
+        return NULL;
+    }
+    char line[MAX_LINE_LEN];
+    fclose(script);
    return NULL;
 }
 
