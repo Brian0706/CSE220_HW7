@@ -244,6 +244,23 @@ matrix_sf *execute_script_sf(char *filename) {
         return NULL;
     }
     char line[MAX_LINE_LEN];
+    char* rightSide;
+    char name;
+    matrix_sf* result;
+    bst_sf* root = NULL;
+    while(fgets(line, MAX_LINE_LEN, script) != NULL){
+        name = line[0];
+        strtok(line, "=");
+        rightSide = strtok(NULL, "=");
+        while(*rightSide++ == ' ');
+        if(isdigit(*rightSide)){
+            result = create_matrix_sf(name, rightSide);
+        }
+        else{
+            result = evaluate_expr_sf(name, rightSide, root);
+        }
+        root = insert_bst_sf(result, root);
+    }
     fclose(script);
    return NULL;
 }
