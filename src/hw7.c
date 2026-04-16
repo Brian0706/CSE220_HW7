@@ -1,14 +1,68 @@
 #include "hw7.h"
 
 bst_sf* insert_bst_sf(matrix_sf *mat, bst_sf *root) {
-    return NULL;
+    bst_sf* newNode = malloc(sizeof(bst_sf));
+    (newNode->mat) = mat;
+    (newNode->left_child)=NULL;
+    (newNode->right_child)=NULL;
+    if(root == NULL){
+        return newNode;
+    }
+    bst_sf* current = root;
+    bst_sf* prev = NULL;
+    /*Indicates whether or not the last move was to the left or right*/
+    int direction = -1;
+    while(current != NULL){
+        prev = current;
+        if((current->mat)->name < mat->name){
+            current=(current->right_child);
+            direction = 0;
+        }
+        else{
+            current=(current->left_child);
+            direction = 1;
+        }
+    }
+    if(direction == 1){
+        prev->left_child = newNode;
+    }
+    else{
+        prev->right_child=newNode;
+    }
+    return root;
 }
 
 matrix_sf* find_bst_sf(char name, bst_sf *root) {
+    if(root == NULL){
+        return NULL;
+    }
+    bst_sf* cur = root;
+    while(cur != NULL){
+        if((cur->mat)->name < name){
+            cur=(cur->right_child);
+        }
+        else if((cur->mat)->name > name){
+            cur=(cur->left_child);
+        }
+        else{
+            return cur->mat;
+        }
+    }
     return NULL;
 }
 
 void free_bst_sf(bst_sf *root) {
+    if(root == NULL){
+        return;
+    }
+    if(root->left_child != NULL){
+        free_bst_sf(root->left_child);
+    }
+    if(root ->right_child != NULL){
+        free_bst_sf(root->right_child);
+    }
+    free(root->mat);
+    free(root);
 }
 
 matrix_sf* add_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
@@ -64,15 +118,124 @@ matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
 }
 
 matrix_sf* create_matrix_sf(char name, const char *expr) {
-    return NULL;
+    char* pointer = expr;
+    int num_rows = strtol(expr, &pointer, 10);
+    expr = pointer;
+    while(*expr == ' '){
+        expr++;
+    };
+    pointer = expr;
+    int num_cols = strtol(expr, &pointer, 10);
+    expr = pointer;
+    matrix_sf* matrix = malloc(sizeof(matrix_sf)+num_rows*num_cols*sizeof(int));
+    (matrix->name) = name;
+    (matrix->num_rows) = num_rows;
+    (matrix->num_cols) = num_cols;
+    expr = strchr(expr, '[') + 1;
+    while(*expr == ' '){
+        expr++;
+    };
+    pointer = expr;
+    for(int i = 0; i < num_rows * num_cols; i++){
+        long num = strtol(expr, &pointer, 10);
+        *(matrix->values+i) = (int) num;
+        expr = pointer;
+        while(*expr == ' ' || *expr == ';'){
+            expr++;
+        };
+        pointer = expr;
+    }
+    return matrix;
 }
 
 char* infix2postfix_sf(char *infix) {
-    return NULL;
+    char operations[strlen(infix) + 1];
+    char *operationPointer = operations-1;
+    char *result = calloc(strlen(infix) + 1,1);
+    if(result == NULL){
+        return NULL;
+    }
+    char *pointer = result;
+    while(*infix){
+        switch(*infix){
+            case '\'':
+                while(operationPointer >= operations && *operationPointer == '\''){
+                    *pointer++ = *operationPointer--;
+                }
+                *++operationPointer = *infix++;
+                break;
+            case '+':
+                while(operationPointer >= operations && *operationPointer != '('){
+                    *pointer++ = *operationPointer--;
+                }
+                *++operationPointer = *infix++;
+                break;
+            case '*':
+                while(operationPointer >= operations && *operationPointer != '+' && *operationPointer != '('){
+                    *pointer++ = *operationPointer--;
+                }
+                *++operationPointer = *infix++;
+                break;
+            case ')':
+                while(operationPointer >= operations && *operationPointer != '('){
+                    *pointer++ = *operationPointer--;
+                }
+                operationPointer--,*infix++;
+                break;
+            case '(':
+                *++operationPointer = *infix++;
+                break;
+            case ' ':
+                *infix++;
+                break;
+            default:
+                *pointer++ = *infix++;
+        }
+    }
+    while(operationPointer >= operations){
+        *pointer++ = *operationPointer--;
+    }
+    *pointer = '\0';
+    return result;
 }
 
 matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
-    return NULL;
+    char* postfix = infix2postfix_sf(expr);
+    matrix_sf* matrices[strlen(expr) + 1];
+    matrix_sf** matrixPointer = matrices - 1;
+    matrix_sf* operand1;
+    matrix_sf* operand2;
+    matrix_sf* transposed;
+    while(*postfix){
+        switch(*postfix){
+            case '\'':
+                transposed = transpose_mat_sf(*matrixPointer);
+                if((*matrixPointer)->name == '?')free(*matrixPointer);
+                *matrixPointer = transposed;
+                break;
+            case '+':
+                operand1 = *matrixPointer--;
+                operand2 = *matrixPointer;
+                matrix_sf* sum = add_mats_sf(operand1, operand2);
+                if((operand1)->name == '?')free(operand1);
+                if((operand2)->name == '?')free(operand2);
+                *matrixPointer = sum;
+                break;
+            case '*':
+                operand1 = *matrixPointer--;
+                operand2 = *matrixPointer;
+                matrix_sf* product = mult_mats_sf(operand2, operand1);
+                if((operand1)->name == '?')free(operand1);
+                if((operand2)->name == '?')free(operand2);
+                *matrixPointer = product;
+                break;
+            default:
+                matrix_sf* matrix = find_bst_sf(*postfix, root);
+                *++matrixPointer = matrix;
+        }
+        postfix++;
+    }
+    return *matrices;
 }
 
 matrix_sf *execute_script_sf(char *filename) {
