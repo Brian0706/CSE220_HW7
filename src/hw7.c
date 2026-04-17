@@ -201,6 +201,8 @@ char* infix2postfix_sf(char *infix) {
 
 matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
     char* postfix = infix2postfix_sf(expr);
+    /*Saved so that I can free the string later*/
+    char* expression = postfix;
     matrix_sf* matrices[strlen(expr) + 1];
     matrix_sf** matrixPointer = matrices - 1;
     matrix_sf* operand1;
@@ -230,6 +232,8 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
                 if((operand2)->name == '?')free(operand2);
                 *matrixPointer = product;
                 break;
+            case '\n':
+                break;
             default:
                 matrix = find_bst_sf(*postfix, root);
                 *++matrixPointer = matrix;
@@ -238,6 +242,7 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
         postfix++;
     }
     (*matrices)->name = name;
+    free(expression);
     return *matrices;
 }
 
@@ -246,16 +251,23 @@ matrix_sf *execute_script_sf(char *filename) {
     if(script == NULL){
         return NULL;
     }
-    char line[MAX_LINE_LEN];
+    char *line = NULL;
+    size_t max_line_size = MAX_LINE_LEN;
     char* rightSide;
     char name;
-    matrix_sf* result;
+    matrix_sf* result = NULL;
     bst_sf* root = NULL;
-    while(fgets(line, MAX_LINE_LEN, script) != NULL){
+    matrix_sf* ans;
+    while(getline(&line,&max_line_size, script) != EOF){
         name = line[0];
-        strtok(line, "=");
-        rightSide = strtok(NULL, "=");
-        while(*rightSide++ == ' ');
+        rightSide = strchr(line, '=');
+        rightSide++;
+        if(rightSide == NULL){
+            continue;
+        }
+        while(*rightSide == ' '){
+            rightSide++;
+        };
         if(isdigit(*rightSide)){
             result = create_matrix_sf(name, rightSide);
         }
@@ -265,7 +277,11 @@ matrix_sf *execute_script_sf(char *filename) {
         root = insert_bst_sf(result, root);
     }
     fclose(script);
-   return NULL;
+    ans = copy_matrix(result->num_rows,result->num_cols,result->values);
+    ans->name = result->name;
+    free_bst_sf(root);
+    free(line);
+    return ans;
 }
 
 // This is a utility function used during testing. Feel free to adapt the code to implement some of
