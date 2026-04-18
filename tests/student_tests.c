@@ -3,6 +3,10 @@
 TestSuite(operators_test, .timeout=TEST_TIMEOUT, .disabled=false); // return value of add, mult, transpose
 TestSuite(operators_valgrind, .timeout=TEST_TIMEOUT, .disabled=false); 
 
+TestSuite(insert_bst_test, .timeout=TEST_TIMEOUT, .disabled=false); // test insert_bst_sf for correct BST update
+TestSuite(find_bst_test, .timeout=TEST_TIMEOUT, .disabled=false);
+TestSuite(free_bst_test, .timeout=TEST_TIMEOUT, .disabled=false);
+
 Test(operators_test, add01, .description="Add 2 1x1 matrices") {
     matrix_sf *A = copy_matrix(1, 1, (int[]){-4});
     matrix_sf *B = copy_matrix(1, 1, (int[]){10});
@@ -333,3 +337,187 @@ Test(operators_test, trans10, .description="Transpose a rectangular matrix twice
     free(Z);
 }
 Test(operators_valgrind, trans10) { expect_no_valgrind_errors(run_with_valgrind("student_trans10")); }
+
+Test(insert_bst_test, insert_bst01, .description="Test if insert_bst_sf creates one node tree.") {
+    bst_sf *root = NULL;
+    char names[] = "H";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char output[27] = {0};
+    inorder_sf(root, output);
+    sort_string_sf(names);
+    cr_expect_arr_eq(output, names, strlen(names), "BST does not store the nodes in sorted order.");
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.    
+}
+
+Test(insert_bst_test, insert_bst02, .description="Test if insert_bst_sf creates largestTree.") {
+    bst_sf *root = NULL;
+    char names[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char output[27] = {0};
+    inorder_sf(root, output);
+    sort_string_sf(names);
+    cr_expect_arr_eq(output, names, strlen(names), "BST does not store the nodes in sorted order.");
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.    
+}
+
+Test(insert_bst_test, insert_bst03, .description="Test if insert_bst_sf can sort characters in reverse order.") {
+    bst_sf *root = NULL;
+    char names[] = "ZYXWVUTSRQPONMLKJIHGFEDCBA";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char output[27] = {0};
+    inorder_sf(root, output);
+    sort_string_sf(names);
+    cr_expect_arr_eq(output, names, strlen(names), "BST does not store the nodes in sorted order.");
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.    
+}
+
+
+Test(insert_bst_test, insert_bst04, .description="Test if insert_bst_sf can sort characters in random order.") {
+    bst_sf *root = NULL;
+    char names[] = "QMJIFEWYPNOZGDVTLCHKSBUARX";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char output[27] = {0};
+    inorder_sf(root, output);
+    sort_string_sf(names);
+    cr_expect_arr_eq(output, names, strlen(names), "BST does not store the nodes in sorted order.");
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.    
+}
+
+
+Test(insert_bst_test, insert_bst05, .description="Test if insert_bst_sf can sort characters in a different random order.") {
+    bst_sf *root = NULL;
+    char names[] = "ZTUSFWBNPDJYQXRVAMCKHLEOIG";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char output[27] = {0};
+    inorder_sf(root, output);
+    sort_string_sf(names);
+    cr_expect_arr_eq(output, names, strlen(names), "BST does not store the nodes in sorted order.");
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.    
+}
+
+
+Test(insert_bst_test, insert_bst06, .description="Test if insert_bst_sf can sort characters in a different random order with only half.") {
+    bst_sf *root = NULL;
+    char names[] = "UJNBFGODMRLIT";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char output[27] = {0};
+    inorder_sf(root, output);
+    sort_string_sf(names);
+    cr_expect_arr_eq(output, names, strlen(names), "BST does not store the nodes in sorted order.");
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.    
+}
+
+Test(insert_bst_test, insert_bst07, .description="Test if insert_bst_sf can sort characters in a different random order with only half.") {
+    bst_sf *root = NULL;
+    char names[] = "ERLJFAPQBUHXC";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char output[27] = {0};
+    inorder_sf(root, output);
+    sort_string_sf(names);
+    cr_expect_arr_eq(output, names, strlen(names), "BST does not store the nodes in sorted order.");
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.    
+}
+
+Test(insert_bst_test, insert_bst08, .description="Test if insert_bst_sf can sort characters with it partially sorted.") {
+    bst_sf *root = NULL;
+    char names[] = "ABCDEFOPTSJVMQIUNZRHXGKWLY";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char output[27] = {0};
+    inorder_sf(root, output);
+    sort_string_sf(names);
+    cr_expect_arr_eq(output, names, strlen(names), "BST does not store the nodes in sorted order.");
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.    
+}
+
+Test(insert_bst_test, insert_bst09, .description="Test if insert_bst_sf can sort characters with it partially sorted.") {
+    bst_sf *root = NULL;
+    char names[] = "ABCDEFOWULQNTIPHGMRJKSVXYZ";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char output[27] = {0};
+    inorder_sf(root, output);
+    sort_string_sf(names);
+    cr_expect_arr_eq(output, names, strlen(names), "BST does not store the nodes in sorted order.");
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.    
+}
+
+
+Test(insert_bst_test, insert_bst10, .description="Test if insert_bst_sf can sort string of length 4.") {
+    bst_sf *root = NULL;
+    char names[] = "DRFE";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char output[27] = {0};
+    inorder_sf(root, output);
+    sort_string_sf(names);
+    cr_expect_arr_eq(output, names, strlen(names), "BST does not store the nodes in sorted order.");
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.    
+}
