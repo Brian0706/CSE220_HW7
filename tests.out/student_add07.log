@@ -1,0 +1,13 @@
+==75352== Memcheck, a memory error detector
+==75352== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==75352== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==75352== Command: ./bin/student_add07
+==75352== 
+==75352== 
+==75352== HEAP SUMMARY:
+==75352==     in use at exit: 0 bytes in 0 blocks
+==75352==   total heap usage: 3 allocs, 3 frees, 72 bytes allocated
+==75352== 
+==75352== All heap blocks were freed -- no leaks are possible
+==75352== 
+==75352== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

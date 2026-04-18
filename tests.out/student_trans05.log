@@ -1,0 +1,13 @@
+==75485== Memcheck, a memory error detector
+==75485== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==75485== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==75485== Command: ./bin/student_trans05
+==75485== 
+==75485== 
+==75485== HEAP SUMMARY:
+==75485==     in use at exit: 0 bytes in 0 blocks
+==75485==   total heap usage: 2 allocs, 2 frees, 96 bytes allocated
+==75485== 
+==75485== All heap blocks were freed -- no leaks are possible
+==75485== 
+==75485== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

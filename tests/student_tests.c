@@ -239,3 +239,97 @@ Test(operators_test, mult10, .description="Mulitply zero matrices") {
     free(Z);
 }
 Test(operators_valgrind, mult10) { expect_no_valgrind_errors(run_with_valgrind("student_mult10")); }
+
+Test(operators_test, trans01, .description="Transpose a 1x1 matrix") {
+    matrix_sf *M = copy_matrix(1, 1, (int[]){-7});
+    matrix_sf *G = transpose_mat_sf(M);
+    expect_matrices_equal(G, 1, 1, (int[]){-7});
+    free(M);
+    free(G);
+}
+Test(operators_valgrind, trans01) { expect_no_valgrind_errors(run_with_valgrind("student_trans01")); }
+
+Test(operators_test, trans02, .description="Transpose a row matrix") {
+    matrix_sf *M = copy_matrix(1, 3, (int[]){-7,1,2});
+    matrix_sf *G = transpose_mat_sf(M);
+    expect_matrices_equal(G, 3, 1, (int[]){-7,1,2});
+    free(M);
+    free(G);
+}
+Test(operators_valgrind, trans02) { expect_no_valgrind_errors(run_with_valgrind("student_trans02")); }
+
+Test(operators_test, trans03, .description="Transpose a column matrix") {
+    matrix_sf *M = copy_matrix(4, 1, (int[]){-7,1,2,4});
+    matrix_sf *G = transpose_mat_sf(M);
+    expect_matrices_equal(G, 1, 4, (int[]){-7,1,2,4});
+    free(M);
+    free(G);
+}
+Test(operators_valgrind, trans03) { expect_no_valgrind_errors(run_with_valgrind("student_trans03")); }
+
+Test(operators_test, trans04, .description="Transpose a 2x4 matrix") {
+    matrix_sf *M = copy_matrix(2, 4, (int[]){1,2,3,4,5,6,7,8});
+    matrix_sf *G = transpose_mat_sf(M);
+    expect_matrices_equal(G, 4, 2, (int[]){1,5,2,6,3,7,4,8});
+    free(M);
+    free(G);
+}
+Test(operators_valgrind, trans04) { expect_no_valgrind_errors(run_with_valgrind("student_trans04")); }
+
+Test(operators_test, trans05, .description="Transpose a diagonal matrix") {
+    matrix_sf *M = copy_matrix(3, 3, (int[]){1,0,0,0,2,0,0,0,3});
+    matrix_sf *G = transpose_mat_sf(M);
+    expect_matrices_equal(G, 3, 3, (int[]){1,0,0,0,2,0,0,0,3});
+    free(M);
+    free(G);
+}
+Test(operators_valgrind, trans05) { expect_no_valgrind_errors(run_with_valgrind("student_trans05")); }
+
+Test(operators_test, trans06, .description="Transpose a matrix twice") {
+    matrix_sf *M = copy_matrix(2, 4, (int[]){1,2,3,4,5,6,7,8});
+    matrix_sf *G = transpose_mat_sf(M);
+    matrix_sf *Z = transpose_mat_sf(G);
+    expect_matrices_equal(Z, 2, 4, (int[]){1,2,3,4,5,6,7,8});
+    free(M);
+    free(G);
+    free(Z);
+}
+Test(operators_valgrind, trans06) { expect_no_valgrind_errors(run_with_valgrind("student_trans06")); }
+
+Test(operators_test, trans07, .description="Transpose a matrix with only elements on the anti-diagonal") {
+    matrix_sf *M = copy_matrix(3, 3, (int[]){0,0,1,0,2,0,3,0,0});
+    matrix_sf *G = transpose_mat_sf(M);
+    expect_matrices_equal(G, 3, 3, (int[]){0,0,3,0,2,0,1,0,0});
+    free(M);
+    free(G);
+}
+Test(operators_valgrind, trans07) { expect_no_valgrind_errors(run_with_valgrind("student_trans07")); }
+
+Test(operators_test, trans08, .description="Transpose a zero matrix") {
+    matrix_sf *M = copy_matrix(3, 3, (int[]){0,0,0,0,0,0,0,0,0});
+    matrix_sf *G = transpose_mat_sf(M);
+    expect_matrices_equal(G, 3, 3, (int[]){0,0,0,0,0,0,0,0,0});
+    free(M);
+    free(G);
+}
+Test(operators_valgrind, trans08) { expect_no_valgrind_errors(run_with_valgrind("student_trans08")); }
+
+Test(operators_test, trans09, .description="Transpose a rectangular matrix") {
+    matrix_sf *M = copy_matrix(5, 3, (int[]){1,2,3,4,5,6,7,8,9,0,1,2,3,4,5});
+    matrix_sf *G = transpose_mat_sf(M);
+    expect_matrices_equal(G, 3, 5, (int[]){1,4,7,0,3,2,5,8,1,4,3,6,9,2,5});
+    free(M);
+    free(G);
+}
+Test(operators_valgrind, trans09) { expect_no_valgrind_errors(run_with_valgrind("student_trans09")); }
+
+Test(operators_test, trans10, .description="Transpose a rectangular matrix twice") {
+    matrix_sf *M = copy_matrix(5, 3, (int[]){1,2,3,4,5,6,7,8,9,0,1,2,3,4,5});
+    matrix_sf *G = transpose_mat_sf(M);
+    matrix_sf *Z = transpose_mat_sf(G);
+    expect_matrices_equal(Z, 5, 3, (int[]){1,2,3,4,5,6,7,8,9,0,1,2,3,4,5});
+    free(M);
+    free(G);
+    free(Z);
+}
+Test(operators_valgrind, trans10) { expect_no_valgrind_errors(run_with_valgrind("student_trans10")); }

@@ -1,0 +1,14 @@
+==75079== Memcheck, a memory error detector
+==75079== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==75079== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==75079== Command: ./bin/execute_script script07
+==75079== 
+3 4 20 -16 10 -46 61 -49 -2 -9 185 25 -21 -45
+==75079== 
+==75079== HEAP SUMMARY:
+==75079==     in use at exit: 0 bytes in 0 blocks
+==75079==   total heap usage: 15 allocs, 15 frees, 9,251 bytes allocated
+==75079== 
+==75079== All heap blocks were freed -- no leaks are possible
+==75079== 
+==75079== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
