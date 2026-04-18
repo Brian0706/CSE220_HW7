@@ -1,0 +1,13 @@
+==61455== Memcheck, a memory error detector
+==61455== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==61455== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==61455== Command: ./bin/student_mult08
+==61455== 
+==61455== 
+==61455== HEAP SUMMARY:
+==61455==     in use at exit: 0 bytes in 0 blocks
+==61455==   total heap usage: 3 allocs, 3 frees, 64 bytes allocated
+==61455== 
+==61455== All heap blocks were freed -- no leaks are possible
+==61455== 
+==61455== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

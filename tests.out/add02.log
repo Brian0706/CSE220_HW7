@@ -1,0 +1,13 @@
+==61266== Memcheck, a memory error detector
+==61266== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==61266== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==61266== Command: ./bin/add02
+==61266== 
+==61266== 
+==61266== HEAP SUMMARY:
+==61266==     in use at exit: 0 bytes in 0 blocks
+==61266==   total heap usage: 3 allocs, 3 frees, 84 bytes allocated
+==61266== 
+==61266== All heap blocks were freed -- no leaks are possible
+==61266== 
+==61266== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -1,0 +1,13 @@
+==61361== Memcheck, a memory error detector
+==61361== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==61361== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==61361== Command: ./bin/student_add08
+==61361== 
+==61361== 
+==61361== HEAP SUMMARY:
+==61361==     in use at exit: 0 bytes in 0 blocks
+==61361==   total heap usage: 3 allocs, 3 frees, 72 bytes allocated
+==61361== 
+==61361== All heap blocks were freed -- no leaks are possible
+==61361== 
+==61361== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
