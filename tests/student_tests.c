@@ -749,3 +749,43 @@ Test(find_bst_test, search_bst10, .description="Repeatdly search the same term."
         free(mats[i]);
     // Note: test does not deallocate memory of BST.  
 }
+
+Test(free_bst_test, free_bst01, .description="Free smallest possible tree.") {
+    expect_no_valgrind_errors(run_with_valgrind("student_free01"));
+}
+
+Test(free_bst_test, free_bst02, .description="Free largest possible tree made in alphabetical order.") {
+    expect_no_valgrind_errors(run_with_valgrind("student_free02"));
+}
+
+Test(free_bst_test, free_bst03, .description="Free largest possible tree made in reverse order.") {
+    expect_no_valgrind_errors(run_with_valgrind("student_free03"));
+}
+
+Test(free_bst_test, free_bst04, .description="Free largest possible tree made in random order.") {
+    expect_no_valgrind_errors(run_with_valgrind("student_free04"));
+}
+
+Test(free_bst_test, free_bst05, .description="Free largest possible tree made in another random order.") {
+    expect_no_valgrind_errors(run_with_valgrind("student_free05"));
+}
+
+Test(free_bst_test, free_bst06, .description="Free a tree that contains half the alphabet.") {
+    expect_no_valgrind_errors(run_with_valgrind("student_free06"));
+}
+
+Test(free_bst_test, free_bst07, .description="Free a tree that contains half the alphabet in another random order.") {
+    expect_no_valgrind_errors(run_with_valgrind("student_free07"));
+}
+
+Test(free_bst_test, free_bst08, .description="Free a largest possible tree that was given partially sorted.") {
+    expect_no_valgrind_errors(run_with_valgrind("student_free08"));
+}
+
+Test(free_bst_test, free_bst09, .description="Free a smaller tree.") {
+    expect_no_valgrind_errors(run_with_valgrind("student_free09"));
+}
+
+Test(free_bst_test, free_bst10, .description="Free a tree of length 4.") {
+    expect_no_valgrind_errors(run_with_valgrind("student_free10"));
+}
