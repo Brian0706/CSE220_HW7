@@ -521,3 +521,231 @@ Test(insert_bst_test, insert_bst10, .description="Test if insert_bst_sf can sort
         free(mats[i]);
     // Note: test does not deallocate memory of BST.    
 }
+
+Test(find_bst_test, search_bst01, .description="Test if find_bst returns the correct matrix for smallest possible tree.") {
+    bst_sf *root = NULL;
+    char names[] = "B";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char *search_names = "B";
+    matrix_sf *mat;
+    for (size_t i = 0; i < strlen(search_names); i++) {
+        mat = find_bst_sf(search_names[i], root);
+        cr_expect_eq(mat->name, search_names[i], 
+            "The returned matrix did not have the expected name. Actual: %c, Expected: %c", mat->name, search_names[i]);
+    } 
+    
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.  
+}
+
+Test(find_bst_test, search_bst02, .description="Test if find_bst returns the correct matrix for largest possible tree.") {
+    bst_sf *root = NULL;
+    char names[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char *search_names = "XFG";
+    matrix_sf *mat;
+    for (size_t i = 0; i < strlen(search_names); i++) {
+        mat = find_bst_sf(search_names[i], root);
+        cr_expect_eq(mat->name, search_names[i], 
+            "The returned matrix did not have the expected name. Actual: %c, Expected: %c", mat->name, search_names[i]);
+    } 
+    
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.  
+}
+
+Test(find_bst_test, search_bst03, .description="Test if find_bst returns the correct matrix for getting all nodes in a largest possible tree.") {
+    bst_sf *root = NULL;
+    char names[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char *search_names = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    matrix_sf *mat;
+    for (size_t i = 0; i < strlen(search_names); i++) {
+        mat = find_bst_sf(search_names[i], root);
+        cr_expect_eq(mat->name, search_names[i], 
+            "The returned matrix did not have the expected name. Actual: %c, Expected: %c", mat->name, search_names[i]);
+    } 
+    
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.  
+}
+
+Test(find_bst_test, search_bst04, .description="Test if find_bst returns the null since no search names will be in tree.") {
+    bst_sf *root = NULL;
+    char names[] = "ABC";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char *search_names = "XYZ";
+    matrix_sf *mat;
+    for (size_t i = 0; i < strlen(search_names); i++) {
+        mat = find_bst_sf(search_names[i], root);
+        cr_expect_eq(mat, NULL, "The return value should have been NULL, but it was %p", mat);
+    } 
+    
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.  
+}
+
+Test(find_bst_test, search_bst05, .description="Test if find_bst returns the correct matrix for a tree.") {
+    bst_sf *root = NULL;
+    char names[] = "ERLJFAPQBUHXC";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char *search_names = "JFCX";
+    matrix_sf *mat;
+    for (size_t i = 0; i < strlen(search_names); i++) {
+        mat = find_bst_sf(search_names[i], root);
+        cr_expect_eq(mat->name, search_names[i], 
+            "The returned matrix did not have the expected name. Actual: %c, Expected: %c", mat->name, search_names[i]);
+    } 
+    
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.  
+}
+
+Test(find_bst_test, search_bst06, .description="Test if find_bst returns the correct matrix for a tree, some of the search matrices are not present.") {
+    bst_sf *root = NULL;
+    char names[] = "ERLJFAPQBUHXC";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char *search_names = "JFCXYD";
+    matrix_sf *mat;
+    for (size_t i = 0; i < strlen(search_names); i++) {
+        mat = find_bst_sf(search_names[i], root);
+        if (search_names[i] == 'Y' || search_names[i] == 'D')
+            cr_expect_eq(mat, NULL, "The return value should have been NULL, but it was %p", mat);
+        else{
+            cr_expect_eq(mat->name, search_names[i], 
+                "The returned matrix did not have the expected name. Actual: %c, Expected: %c", mat->name, search_names[i]);
+        }
+    } 
+    
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.  
+}
+
+Test(find_bst_test, search_bst07, .description="Test if find_bst returns null if a null tree is passed in.") {
+    bst_sf *root = NULL;
+    char names[] = "";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char *search_names = "JFCXYD";
+    matrix_sf *mat;
+    for (size_t i = 0; i < strlen(search_names); i++) {
+        mat = find_bst_sf(search_names[i], root);
+        cr_expect_eq(mat, NULL, "The return value should have been NULL, but it was %p", mat);
+    } 
+    
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.  
+}
+
+Test(find_bst_test, search_bst08, .description="Testing when only one search term is present.") {
+    bst_sf *root = NULL;
+    char names[] = "A";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char *search_names = "ABCDEFGHIJ";
+    matrix_sf *mat;
+    for (size_t i = 0; i < strlen(search_names); i++) {
+        mat = find_bst_sf(search_names[i], root);
+        if (search_names[i] == 'A')
+            cr_expect_eq(mat->name, search_names[i], 
+                    "The returned matrix did not have the expected name. Actual: %c, Expected: %c", mat->name, search_names[i]);
+        else{
+            cr_expect_eq(mat, NULL, "The return value should have been NULL, but it was %p", mat);
+        }
+    } 
+    
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.  
+}
+
+Test(find_bst_test, search_bst09, .description="Testing on a tree with a random patter.") {
+    bst_sf *root = NULL;
+    char names[] = "MUHKWVJRLSTQPNGOI";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char *search_names = "QPNGOI";
+    matrix_sf *mat;
+    for (size_t i = 0; i < strlen(search_names); i++) {
+        mat = find_bst_sf(search_names[i], root);
+        cr_expect_eq(mat->name, search_names[i], 
+            "The returned matrix did not have the expected name. Actual: %c, Expected: %c", mat->name, search_names[i]);
+    
+    } 
+    
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.  
+}
+
+Test(find_bst_test, search_bst10, .description="Repeatdly search the same term.") {
+    bst_sf *root = NULL;
+    char names[] = "NHWLKOQIVMJTSUGRP";
+    matrix_sf *mats[strlen(names)];
+    for (size_t i = 0; i < strlen(names); i++) {
+        mats[i] = malloc(sizeof(matrix_sf));
+        mats[i]->name = names[i];
+        root = insert_bst_sf(mats[i], root);
+    }
+    char *search_names = "WLKQIGGVMGG";
+    matrix_sf *mat;
+    for (size_t i = 0; i < strlen(search_names); i++) {
+        mat = find_bst_sf(search_names[i], root);
+        cr_expect_eq(mat->name, search_names[i], 
+            "The returned matrix did not have the expected name. Actual: %c, Expected: %c", mat->name, search_names[i]);
+    
+    } 
+    
+    for (size_t i = 0; i < strlen(names); i++)
+        free(mats[i]);
+    // Note: test does not deallocate memory of BST.  
+}
