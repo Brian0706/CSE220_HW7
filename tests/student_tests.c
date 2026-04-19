@@ -8,6 +8,7 @@ TestSuite(find_bst_test, .timeout=TEST_TIMEOUT, .disabled=false);
 TestSuite(free_bst_test, .timeout=TEST_TIMEOUT, .disabled=false);
 
 TestSuite(create_matrix_test, .timeout=TEST_TIMEOUT, .disabled=false);
+TestSuite(infix2postfix_test, .timeout=TEST_TIMEOUT, .disabled=false);
 
 Test(operators_test, add01, .description="Add 2 1x1 matrices") {
     matrix_sf *A = copy_matrix(1, 1, (int[]){-4});
@@ -851,3 +852,75 @@ Test(create_matrix_test, create10, .description="Create a 4x4 square matrix with
     expect_matrices_equal(mat, 4, 4, (int[]){1,-2,3,-4,5,-6,7,8,1,2,3,-4,-5,6,7,8});
     cr_expect_eq(mat->name, 'V', "The new matrix did not have the expected name. Actual: %c, Expected: V", mat->name);
 }
+
+/* infix2postfix_sf() tests */
+Test(infix2postfix_test, infix2postfix01, .description="Convert just a matrix infix expression") {
+    char *actual = infix2postfix_sf("A");
+    char *expected = "A";
+    cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
+        actual, expected);
+}
+
+Test(infix2postfix_test, infix2postfix02, .description="Convert just a small addition infix expression") {
+    char *actual = infix2postfix_sf("A+B");
+    char *expected = "AB+";
+    cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
+        actual, expected);
+}
+
+Test(infix2postfix_test, infix2postfix03, .description="Convert just a small multiplication infix expression") {
+    char *actual = infix2postfix_sf("A*B");
+    char *expected = "AB*";
+    cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
+        actual, expected);
+}
+
+Test(infix2postfix_test, infix2postfix04, .description="Convert just a small tranpose infix expression") {
+    char *actual = infix2postfix_sf("A'");
+    char *expected = "A'";
+    cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
+        actual, expected);
+}
+
+Test(infix2postfix_test, infix2postfix05, .description="Convert just a small infix expression to test precedence") {
+    char *actual = infix2postfix_sf("A+C*B'");
+    char *expected = "ACB'*+";
+    cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
+        actual, expected);
+}
+
+Test(infix2postfix_test, infix2postfix06, .description="Convert just a small infix expression with parenthesis") {
+    char *actual = infix2postfix_sf("(A+C)*B'");
+    char *expected = "AC+B'*";
+    cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
+        actual, expected);
+}
+
+Test(infix2postfix_test, infix2postfix07, .description="Convert a larger infix expression") {
+    char *actual = infix2postfix_sf("(A+C)*B''*F+(G'*Y)");
+    char *expected = "AC+B''*F*G'Y*+";
+    cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
+        actual, expected);
+}
+
+Test(infix2postfix_test, infix2postfix08, .description="Convert an infix expression with multiple parenthesis") {
+    char *actual = infix2postfix_sf("(((A+C)))");
+    char *expected = "AC+";
+    cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
+        actual, expected);
+}
+
+Test(infix2postfix_test, infix2postfix09, .description="Convert an infix expression with multiple parenthesis") {
+    char *actual = infix2postfix_sf("(((A+C)*(B+D))'+(E*F))");
+    char *expected = "AC+BD+*'EF*+";
+    cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
+        actual, expected);
+}
+
+Test(infix2postfix_test, infix2postfix10, .description="Convert an infix expression with empty parenthesis") {
+    char *actual = infix2postfix_sf("(A+C)(((())))");
+    char *expected = "AC+";
+    cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
+        actual, expected);
+}
+
