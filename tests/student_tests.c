@@ -7,6 +7,8 @@ TestSuite(insert_bst_test, .timeout=TEST_TIMEOUT, .disabled=false); // test inse
 TestSuite(find_bst_test, .timeout=TEST_TIMEOUT, .disabled=false);
 TestSuite(free_bst_test, .timeout=TEST_TIMEOUT, .disabled=false);
 
+TestSuite(create_matrix_test, .timeout=TEST_TIMEOUT, .disabled=false);
+
 Test(operators_test, add01, .description="Add 2 1x1 matrices") {
     matrix_sf *A = copy_matrix(1, 1, (int[]){-4});
     matrix_sf *B = copy_matrix(1, 1, (int[]){10});
@@ -788,4 +790,64 @@ Test(free_bst_test, free_bst09, .description="Free a smaller tree.") {
 
 Test(free_bst_test, free_bst10, .description="Free a tree of length 4.") {
     expect_no_valgrind_errors(run_with_valgrind("student_free10"));
+}
+
+Test(create_matrix_test, create01, .description="Create an 1x1 matrix") {
+    matrix_sf *mat = create_matrix_sf('V', "1 1 [1]");
+    expect_matrices_equal(mat, 1, 1, (int[]){1});
+    cr_expect_eq(mat->name, 'V', "The new matrix did not have the expected name. Actual: %c, Expected: V", mat->name);
+}
+
+Test(create_matrix_test, create02, .description="Create a 0x0 matrix") {
+    matrix_sf *mat = create_matrix_sf('F', "0 0 [0]");
+    expect_matrices_equal(mat, 0, 0, (int[]){0});
+    cr_expect_eq(mat->name, 'F', "The new matrix did not have the expected name. Actual: %c, Expected: V", mat->name);
+}
+
+Test(create_matrix_test, create03, .description="Create a row vector") {
+    matrix_sf *mat = create_matrix_sf('G', "1 4 [1 2 3 4]");
+    expect_matrices_equal(mat, 1, 4, (int[]){1,2,3,4});
+    cr_expect_eq(mat->name, 'G', "The new matrix did not have the expected name. Actual: %c, Expected: V", mat->name);
+}
+
+Test(create_matrix_test, create04, .description="Create a 4x4 square matrix") {
+    matrix_sf *mat = create_matrix_sf('V', "4 4 [1 2 3 4;5 6 7 8; 1 2 3 4; 5 6 7 8]");
+    expect_matrices_equal(mat, 4, 4, (int[]){1,2,3,4,5,6,7,8,1,2,3,4,5,6,7,8});
+    cr_expect_eq(mat->name, 'V', "The new matrix did not have the expected name. Actual: %c, Expected: V", mat->name);
+}
+
+Test(create_matrix_test, create05, .description="Create a 1x4 matrix with a lot of spaces") {
+    matrix_sf *mat = create_matrix_sf('V', "1 4 [1                    3                 4                 5]");
+    expect_matrices_equal(mat, 1, 4, (int[]){1,3,4,5});
+    cr_expect_eq(mat->name, 'V', "The new matrix did not have the expected name. Actual: %c, Expected: V", mat->name);
+}
+
+Test(create_matrix_test, create06, .description="Create a 2x4 matrix with a lot of spaces") {
+    matrix_sf *mat = create_matrix_sf('V', "2 4 [1                    3                 4                 5    ;   2 3    4             7]");
+    expect_matrices_equal(mat, 2, 4, (int[]){1,3,4,5,2,3,4,7});
+    cr_expect_eq(mat->name, 'V', "The new matrix did not have the expected name. Actual: %c, Expected: V", mat->name);
+}
+
+Test(create_matrix_test, create07, .description="Create a 6x1 matrix with a lot of spaces") {
+    matrix_sf *mat = create_matrix_sf('A', "6 1 [1                   3              4                 5      2 3]");
+    expect_matrices_equal(mat, 6, 1, (int[]){1,3,4,5,2,3});
+    cr_expect_eq(mat->name, 'A', "The new matrix did not have the expected name. Actual: %c, Expected: V", mat->name);
+}
+
+Test(create_matrix_test, create08, .description="Create a 4x2 matrix with a lot of spaces") {
+    matrix_sf *mat = create_matrix_sf('B', "4 2 [1  2            3      4 ;    1        2 3     4]");
+    expect_matrices_equal(mat, 4, 2, (int[]){1,2,3,4,1,2,3,4});
+    cr_expect_eq(mat->name, 'B', "The new matrix did not have the expected name. Actual: %c, Expected: V", mat->name);
+}
+
+Test(create_matrix_test, create09, .description="Create a 4x2 matrix with a lot of spaces and negative values") {
+    matrix_sf *mat = create_matrix_sf('B', "4 2 [-1  2            -3      -4 ;    1        2 -3     4]");
+    expect_matrices_equal(mat, 4, 2, (int[]){-1,2,-3,-4,1,2,-3,4});
+    cr_expect_eq(mat->name, 'B', "The new matrix did not have the expected name. Actual: %c, Expected: V", mat->name);
+}
+
+Test(create_matrix_test, create10, .description="Create a 4x4 square matrix with negative values") {
+    matrix_sf *mat = create_matrix_sf('V', "4 4 [1 -2 3 -4;5 -6 7 8; 1 2 3 -4; -5 6 7 8]");
+    expect_matrices_equal(mat, 4, 4, (int[]){1,-2,3,-4,5,-6,7,8,1,2,3,-4,-5,6,7,8});
+    cr_expect_eq(mat->name, 'V', "The new matrix did not have the expected name. Actual: %c, Expected: V", mat->name);
 }
