@@ -432,9 +432,9 @@ Test(base_infix2postfix, infix2postfix04, .description="Convert a complex expres
 // /* evaluate_expr_sf tests*/
 Test(base_evaluate_expr, expr01, .description="Given root of a tree, evaluation of an expression") {
     bst_sf* root = build_bst();
-    matrix_sf* result = evaluate_expr_sf('R', "G * C + F'", root);
-    expect_matrices_equal(result, 7, 4, (int[]){4597, -1765, 206, -5401, -512, 159, -15, 647, -5547, 2117, -104, 6407, 1720, -523, 199, -1962, 12587, -4696, 281, -14286, 8973, -3330, 436, -9965, 3439, -1138, 222, -3721});
-}
+        matrix_sf* result = evaluate_expr_sf('R', "G * C + F'", root);
+            expect_matrices_equal(result, 7, 4, (int[]){4597, -1765, 206, -5401, -512, 159, -15, 647, -5547, 2117, -104, 6407, 1720, -523, 199, -1962, 12587, -4696, 281, -14286, 8973, -3330, 436, -9965, 3439, -1138, 222, -3721});
+            }
 
 Test(base_evaluate_expr, expr02, .description="Given root of a tree, evaluation of an expression") {
     bst_sf* root = build_bst();

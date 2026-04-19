@@ -1,4 +1,5 @@
 #include "unit_tests.h"
+#include "hw7.h"
 
 TestSuite(operators_test, .timeout=TEST_TIMEOUT, .disabled=false); // return value of add, mult, transpose
 TestSuite(operators_valgrind, .timeout=TEST_TIMEOUT, .disabled=false); 
@@ -9,6 +10,7 @@ TestSuite(free_bst_test, .timeout=TEST_TIMEOUT, .disabled=false);
 
 TestSuite(create_matrix_test, .timeout=TEST_TIMEOUT, .disabled=false);
 TestSuite(infix2postfix_test, .timeout=TEST_TIMEOUT, .disabled=false);
+TestSuite(evaluate_expr_test, .timeout=TEST_TIMEOUT, .disabled=false);
 
 Test(operators_test, add01, .description="Add 2 1x1 matrices") {
     matrix_sf *A = copy_matrix(1, 1, (int[]){-4});
@@ -922,5 +924,69 @@ Test(infix2postfix_test, infix2postfix10, .description="Convert an infix express
     char *expected = "AC+";
     cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
         actual, expected);
+}
+
+/* evaluate_expr_sf tests*/
+Test(evaluate_expr_test, expr01, .description="Given root of a tree, evaluation of a expression of just one matrix") {
+    bst_sf* root = build_bst();
+    matrix_sf* result = evaluate_expr_sf('R', "C", root);
+    expect_matrices_equal(result, 1, 4, (int[]){-123,47,-4,140});
+}
+
+Test(evaluate_expr_test, expr02, .description="Given root of a tree, evaluation of a expression of just transpose") {
+    bst_sf* root = build_bst();
+    matrix_sf* result = evaluate_expr_sf('R', "C'", root);
+    expect_matrices_equal(result, 4, 1, (int[]){-123,47,-4,140});
+}
+
+Test(evaluate_expr_test, expr03, .description="Given root of a tree, evaluation of a expression of just addition") {
+    bst_sf* root = build_bst();
+    matrix_sf* result = evaluate_expr_sf('R', "C+D", root);
+    expect_matrices_equal(result, 1, 4, (int[]){-139,169,131,247});
+}
+
+Test(evaluate_expr_test, expr04, .description="Given root of a tree, evaluation of a expression of just multiplication") {
+    bst_sf* root = build_bst();
+    matrix_sf* result = evaluate_expr_sf('R', "D*I", root);
+    expect_matrices_equal(result, 1, 4, (int[]){-26856,-43106,-5829,-15767});
+}
+
+Test(evaluate_expr_test, expr05, .description="Given root of a tree, evaluation of a expression with precedence affecting the result") {
+    bst_sf* root = build_bst();
+    matrix_sf* result = evaluate_expr_sf('R', "D*I'", root);
+    expect_matrices_equal(result, 1, 4, (int[]){-14208,-14219,-40265,-3365});
+}
+
+Test(evaluate_expr_test, expr06, .description="Given root of a tree, evaluation of a expression with parentheses") {
+    bst_sf* root = build_bst();
+    matrix_sf* result = evaluate_expr_sf('R', "(D*I)'", root);
+    expect_matrices_equal(result, 4, 1, (int[]){-26856,-43106,-5829,-15767});
+}
+
+Test(evaluate_expr_test, expr07, .description="Given root of a tree, evaluation of a expression with precedence affecting the result") {
+    bst_sf* root = build_bst();
+    matrix_sf* result = evaluate_expr_sf('R', "D*I'+C", root);
+    print_matrix_sf(result);
+    expect_matrices_equal(result, 1, 4, (int[]){-14331,-14172,-40269,-3225});
+}
+
+Test(evaluate_expr_test, expr08, .description="Given root of a tree, evaluation of a expression with a lot of spaces") {
+    bst_sf* root = build_bst();
+    matrix_sf* result = evaluate_expr_sf('R', "(D   * I   ')        +   C", root);
+    expect_matrices_equal(result, 1, 4, (int[]){-14331,-14172,-40269,-3225});
+}
+
+Test(evaluate_expr_test, expr09, .description="Given root of a tree, evaluation of a expression with lots of parentheses that don't do anything") {
+    bst_sf* root = build_bst();
+    matrix_sf* result = evaluate_expr_sf('R', "(D*((I))'+C)", root);
+    print_matrix_sf(result);
+    expect_matrices_equal(result, 1, 4, (int[]){-14331,-14172,-40269,-3225});
+}
+
+Test(evaluate_expr_test, expr10, .description="Given root of a tree, evaluation of a expression with lots of tranposes") {
+    bst_sf* root = build_bst();
+    matrix_sf* result = evaluate_expr_sf('R', "D*I'+C''''''", root);
+    print_matrix_sf(result);
+    expect_matrices_equal(result, 1, 4, (int[]){-14331,-14172,-40269,-3225});
 }
 
