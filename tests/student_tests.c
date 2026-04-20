@@ -1008,3 +1008,18 @@ Test(execute_test_valgrind, add_matrices02) { expect_no_valgrind_errors(run_scri
 
 Test(execute_test, complex_script01){ run_script_without_valgrind("student_script05"); }
 Test(execute_test_valgrind, complex_script01) { expect_no_valgrind_errors(run_script_with_valgrind("student_script05")); }
+
+Test(execute_test, multiple_same01){ run_script_without_valgrind("student_script06"); }
+Test(execute_test_valgrind, multiple_same01) { expect_no_valgrind_errors(run_script_with_valgrind("student_script06")); }
+
+Test(execute_test, multiplication01){ run_script_without_valgrind("student_script07"); }
+Test(execute_test_valgrind, multiplication01) { expect_no_valgrind_errors(run_script_with_valgrind("student_script07")); }
+
+Test(execute_test, tranpose01){ run_script_without_valgrind("student_script08"); }
+Test(execute_test_valgrind, transpose01) { expect_no_valgrind_errors(run_script_with_valgrind("student_script08")); }
+
+Test(execute_test, withParenthesis01){ run_script_without_valgrind("student_script09"); }
+Test(execute_test_valgrind, withParenthesis01) { expect_no_valgrind_errors(run_script_with_valgrind("student_script09")); }
+
+Test(execute_test, tranpose02){ run_script_without_valgrind("student_script10"); }
+Test(execute_test_valgrind, tranpose02) { expect_no_valgrind_errors(run_script_with_valgrind("student_script10")); }
