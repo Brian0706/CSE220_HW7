@@ -12,6 +12,9 @@ TestSuite(create_matrix_test, .timeout=TEST_TIMEOUT, .disabled=false);
 TestSuite(infix2postfix_test, .timeout=TEST_TIMEOUT, .disabled=false);
 TestSuite(evaluate_expr_test, .timeout=TEST_TIMEOUT, .disabled=false);
 
+TestSuite(execute_test, .timeout=TEST_TIMEOUT, .disabled=false);
+TestSuite(execute_test_valgrind, .timeout=TEST_TIMEOUT, .disabled=false);
+
 Test(operators_test, add01, .description="Add 2 1x1 matrices") {
     matrix_sf *A = copy_matrix(1, 1, (int[]){-4});
     matrix_sf *B = copy_matrix(1, 1, (int[]){10});
@@ -990,3 +993,18 @@ Test(evaluate_expr_test, expr10, .description="Given root of a tree, evaluation 
     expect_matrices_equal(result, 1, 4, (int[]){-14331,-14172,-40269,-3225});
 }
 
+/* execute_script_sf tests */
+Test(execute_test, one_matrix01){ run_script_without_valgrind("student_script01"); }
+Test(execute_test_valgrind, one_matrix01) { expect_no_valgrind_errors(run_script_with_valgrind("student_script01")); }
+
+Test(execute_test, multiple_expressions01){ run_script_without_valgrind("student_script02"); }
+Test(execute_test_valgrind, multiple_expressions02) { expect_no_valgrind_errors(run_script_with_valgrind("student_script02")); }
+
+Test(execute_test, add_matrices01){ run_script_without_valgrind("student_script03"); }
+Test(execute_test_valgrind, add_matrices01) { expect_no_valgrind_errors(run_script_with_valgrind("student_script03")); }
+
+Test(execute_test, add_matrices02){ run_script_without_valgrind("student_script04"); }
+Test(execute_test_valgrind, add_matrices02) { expect_no_valgrind_errors(run_script_with_valgrind("student_script04")); }
+
+Test(execute_test, complex_script01){ run_script_without_valgrind("student_script05"); }
+Test(execute_test_valgrind, complex_script01) { expect_no_valgrind_errors(run_script_with_valgrind("student_script05")); }
