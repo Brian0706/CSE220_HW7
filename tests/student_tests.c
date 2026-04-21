@@ -1023,3 +1023,6 @@ Test(execute_test_valgrind, withParenthesis01) { expect_no_valgrind_errors(run_s
 
 Test(execute_test, tranpose02){ run_script_without_valgrind("student_script10"); }
 Test(execute_test_valgrind, tranpose02) { expect_no_valgrind_errors(run_script_with_valgrind("student_script10")); }
+
+Test(execute_test, tranpose03){ run_script_without_valgrind("student_script11"); }
+Test(execute_test_valgrind, tranpose03) { expect_no_valgrind_errors(run_script_with_valgrind("student_script11")); }
