@@ -188,6 +188,9 @@ char* infix2postfix_sf(char *infix) {
             case ' ':
                 infix++;
                 break;
+            case '\n':
+                infix++;
+                break;
             default:
                 *pointer++ = *infix++;
         }
