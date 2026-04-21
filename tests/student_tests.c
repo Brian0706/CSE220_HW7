@@ -136,7 +136,7 @@ Test(operators_test, add10, .description="Add 3 different 3x3 matrices to test t
     free(D);
     free(store);
 } 
-Test(operators_valgrind, add10) { expect_no_valgrind_errors(run_with_valgrind("student_add09")); }
+Test(operators_valgrind, add10) { expect_no_valgrind_errors(run_with_valgrind("student_add10")); }
 
 Test(operators_test, mult01, .description="Multiply 2 Identity matrices") {
     matrix_sf *G = copy_matrix(4, 4, (int[]){1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0});

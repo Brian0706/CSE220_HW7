@@ -261,10 +261,10 @@ matrix_sf *execute_script_sf(char *filename) {
     while(getline(&line,&max_line_size, script) != EOF){
         name = line[0];
         rightSide = strchr(line, '=');
-        rightSide++;
         if(rightSide == NULL){
             continue;
         }
+        rightSide++;
         while(*rightSide == ' '){
             rightSide++;
         };

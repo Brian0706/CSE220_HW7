@@ -1,0 +1,13 @@
+==2871== Memcheck, a memory error detector
+==2871== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==2871== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==2871== Command: ./bin/student_free02
+==2871== 
+==2871== 
+==2871== HEAP SUMMARY:
+==2871==     in use at exit: 0 bytes in 0 blocks
+==2871==   total heap usage: 52 allocs, 52 frees, 936 bytes allocated
+==2871== 
+==2871== All heap blocks were freed -- no leaks are possible
+==2871== 
+==2871== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

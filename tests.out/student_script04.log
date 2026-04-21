@@ -1,0 +1,14 @@
+==2830== Memcheck, a memory error detector
+==2830== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==2830== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==2830== Command: ./bin/execute_script student_script04
+==2830== 
+3 4 2 4 6 8 2 4 6 8 2 4 6 8
+==2830== 
+==2830== HEAP SUMMARY:
+==2830==     in use at exit: 0 bytes in 0 blocks
+==2830==   total heap usage: 12 allocs, 12 frees, 9,111 bytes allocated
+==2830== 
+==2830== All heap blocks were freed -- no leaks are possible
+==2830== 
+==2830== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

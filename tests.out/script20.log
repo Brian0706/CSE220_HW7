@@ -1,0 +1,14 @@
+==2631== Memcheck, a memory error detector
+==2631== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==2631== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==2631== Command: ./bin/execute_script script20
+==2631== 
+5 5 6264 -25436 10326 15774 23091 156 -31252 19633 -7047 15344 51308 2268 -12862 7573 -7087 45722 14780 41569 -7283 8815 22125 14915 23325 -6118 -1202
+==2631== 
+==2631== HEAP SUMMARY:
+==2631==     in use at exit: 0 bytes in 0 blocks
+==2631==   total heap usage: 18 allocs, 18 frees, 9,866 bytes allocated
+==2631== 
+==2631== All heap blocks were freed -- no leaks are possible
+==2631== 
+==2631== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
