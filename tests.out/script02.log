@@ -1,0 +1,14 @@
+==40420== Memcheck, a memory error detector
+==40420== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==40420== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==40420== Command: ./bin/execute_script script02
+==40420== 
+1 6 -9 77 189 90 150 110
+==40420== 
+==40420== HEAP SUMMARY:
+==40420==     in use at exit: 0 bytes in 0 blocks
+==40420==   total heap usage: 12 allocs, 12 frees, 9,007 bytes allocated
+==40420== 
+==40420== All heap blocks were freed -- no leaks are possible
+==40420== 
+==40420== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -3,7 +3,7 @@
 bst_sf* insert_bst_sf(matrix_sf *mat, bst_sf *root) {
     bst_sf* newNode = malloc(sizeof(bst_sf));
     if(newNode == NULL){
-        return NULL;
+        return newNode;
     }
     (newNode->mat) = mat;
     (newNode->left_child)=NULL;
@@ -61,7 +61,7 @@ void free_bst_sf(bst_sf *root) {
     if(root->left_child != NULL){
         free_bst_sf(root->left_child);
     }
-    if(root ->right_child != NULL){
+    if(root->right_child != NULL){
         free_bst_sf(root->right_child);
     }
     free(root->mat);
@@ -100,7 +100,7 @@ matrix_sf* mult_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
             }
         }
     }
-   return result;
+    return result;
 }
 
 matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
@@ -113,7 +113,7 @@ matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
     result->num_cols = mat->num_rows;
     memset(result->values, 0, mat->num_rows*mat->num_cols*sizeof(int));
     for(unsigned int i = 0; i < mat->num_rows; i++){
-        for(unsigned  int j = 0; j < mat->num_cols;j++){
+        for(unsigned int j = 0; j < mat->num_cols;j++){
             *(result->values+j*result->num_cols+i) = *(mat->values+i*mat->num_cols+j);
         }
     }
@@ -132,7 +132,7 @@ matrix_sf* create_matrix_sf(char name, const char *expr) {
     expr = pointer;
     matrix_sf* matrix = malloc(sizeof(matrix_sf)+num_rows*num_cols*sizeof(int));
     if(matrix == NULL){
-        retur NULL;
+        return NULL;
     }
     (matrix->name) = name;
     (matrix->num_rows) = num_rows;
@@ -186,7 +186,8 @@ char* infix2postfix_sf(char *infix) {
                 while(operationPointer >= operations && *operationPointer != '('){
                     *pointer++ = *operationPointer--;
                 }
-                operationPointer--,*infix++;
+                operationPointer--;
+                infix++;
                 break;
             case '(':
                 *++operationPointer = *infix++;
@@ -223,9 +224,6 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
             case '\'':
                 transposed = transpose_mat_sf(*matrixPointer);
                 if((*matrixPointer)->name == '?')free(*matrixPointer);
-                if(matrixPointer == NULL){
-                    *matrices = NULL;
-                }
                 *matrixPointer = transposed;
                 break;
             case '+':
@@ -234,9 +232,6 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
                 matrix_sf* sum = add_mats_sf(operand1, operand2);
                 if((operand1)->name == '?')free(operand1);
                 if((operand2)->name == '?')free(operand2);
-                if(matrixPointer == NULL){
-                    *matrices = NULL;
-                }
                 *matrixPointer = sum;
                 break;
             case '*':
@@ -245,18 +240,12 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
                 matrix_sf* product = mult_mats_sf(operand2, operand1);
                 if((operand1)->name == '?')free(operand1);
                 if((operand2)->name == '?')free(operand2);
-                if(matrixPointer == NULL){
-                    *matrices = NULL;
-                }
                 *matrixPointer = product;
                 break;
             case '\n':
                 break;
             default:
                 matrix = find_bst_sf(*postfix, root);
-                if(matrixPointer == NULL){
-                    *matrices = NULL;
-                }
                 *++matrixPointer = matrix;
                 break;
         }
@@ -291,17 +280,9 @@ matrix_sf *execute_script_sf(char *filename) {
         };
         if(isdigit(*rightSide)){
             result = create_matrix_sf(name, rightSide);
-            if(result == NULL){
-                ans = NULL;
-                break;
-            }
         }
         else{
             result = evaluate_expr_sf(name, rightSide, root);
-            if(result == NULL){
-                ans = NULL;
-                break;
-            }
         }
         root = insert_bst_sf(result, root);
     }

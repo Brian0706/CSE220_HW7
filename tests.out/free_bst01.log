@@ -1,0 +1,13 @@
+==40554== Memcheck, a memory error detector
+==40554== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==40554== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==40554== Command: ./bin/free_bst01
+==40554== 
+==40554== 
+==40554== HEAP SUMMARY:
+==40554==     in use at exit: 0 bytes in 0 blocks
+==40554==   total heap usage: 6 allocs, 6 frees, 108 bytes allocated
+==40554== 
+==40554== All heap blocks were freed -- no leaks are possible
+==40554== 
+==40554== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

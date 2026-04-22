@@ -1,0 +1,13 @@
+==41047== Memcheck, a memory error detector
+==41047== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==41047== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==41047== Command: ./bin/student_add02
+==41047== 
+==41047== 
+==41047== HEAP SUMMARY:
+==41047==     in use at exit: 0 bytes in 0 blocks
+==41047==   total heap usage: 3 allocs, 3 frees, 144 bytes allocated
+==41047== 
+==41047== All heap blocks were freed -- no leaks are possible
+==41047== 
+==41047== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

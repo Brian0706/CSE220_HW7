@@ -1,0 +1,14 @@
+==40416== Memcheck, a memory error detector
+==40416== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==40416== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==40416== Command: ./bin/execute_script script01
+==40416== 
+3 4 6 27 4 -26 32 30 39 20 93 -47 -88 -2
+==40416== 
+==40416== HEAP SUMMARY:
+==40416==     in use at exit: 0 bytes in 0 blocks
+==40416==   total heap usage: 12 allocs, 12 frees, 9,103 bytes allocated
+==40416== 
+==40416== All heap blocks were freed -- no leaks are possible
+==40416== 
+==40416== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

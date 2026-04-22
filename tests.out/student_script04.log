@@ -1,0 +1,14 @@
+==40719== Memcheck, a memory error detector
+==40719== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==40719== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==40719== Command: ./bin/execute_script student_script04
+==40719== 
+3 4 2 4 6 8 2 4 6 8 2 4 6 8
+==40719== 
+==40719== HEAP SUMMARY:
+==40719==     in use at exit: 0 bytes in 0 blocks
+==40719==   total heap usage: 12 allocs, 12 frees, 9,111 bytes allocated
+==40719== 
+==40719== All heap blocks were freed -- no leaks are possible
+==40719== 
+==40719== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

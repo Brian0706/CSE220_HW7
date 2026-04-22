@@ -1,0 +1,14 @@
+==40502== Memcheck, a memory error detector
+==40502== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==40502== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==40502== Command: ./bin/execute_script script06
+==40502== 
+2 6 33 -22 -36 63 -65 53 -6 123 47 -127 -142 52
+==40502== 
+==40502== HEAP SUMMARY:
+==40502==     in use at exit: 0 bytes in 0 blocks
+==40502==   total heap usage: 10 allocs, 10 frees, 9,016 bytes allocated
+==40502== 
+==40502== All heap blocks were freed -- no leaks are possible
+==40502== 
+==40502== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
