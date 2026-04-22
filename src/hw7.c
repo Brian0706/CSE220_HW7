@@ -221,40 +221,44 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
     matrix_sf* matrix;
     matrix_sf* product;
     while(*postfix){
-        switch(*postfix){
-            case '\'':
-                transposed = transpose_mat_sf(*matrixPointer);
-                if((*matrixPointer)->name == '?')free(*matrixPointer);
-                *matrixPointer = transposed;
-                break;
-            case '+':
-                operand1 = *matrixPointer--;
-                operand2 = *matrixPointer;
-                sum = add_mats_sf(operand1, operand2);
-                if((operand1)->name == '?')free(operand1);
-                if((operand2)->name == '?')free(operand2);
-                *matrixPointer = sum;
-                break;
-            case '*':
-                operand1 = *matrixPointer--;
-                operand2 = *matrixPointer;
-                product = mult_mats_sf(operand2, operand1);
-                if((operand1)->name == '?')free(operand1);
-                if((operand2)->name == '?')free(operand2);
-                *matrixPointer = product;
-                break;
-            case '\n':
-                break;
-            default:
-                matrix = find_bst_sf(*postfix, root);
-                *++matrixPointer = matrix;
-                break;
+        if(isalpha(*postfix)){
+            matrix = find_bst_sf(*postfix, root);
+            *++matrixPointer = matrix;
+        }else{
+            switch(*postfix){
+                case '\'':
+                    transposed = transpose_mat_sf(*matrixPointer);
+                    if((*matrixPointer)->name == '?')free(*matrixPointer);
+                    *matrixPointer = transposed;
+                    break;
+                case '+':
+                    operand1 = *matrixPointer--;
+                    operand2 = *matrixPointer;
+                    sum = add_mats_sf(operand1, operand2);
+                    if((operand1)->name == '?')free(operand1);
+                    if((operand2)->name == '?')free(operand2);
+                    *matrixPointer = sum;
+                    break;
+                case '*':
+                    operand1 = *matrixPointer--;
+                    operand2 = *matrixPointer;
+                    product = mult_mats_sf(operand2, operand1);
+                    if((operand1)->name == '?')free(operand1);
+                    if((operand2)->name == '?')free(operand2);
+                    *matrixPointer = product;
+                    break;
+                default:
+                    break;
+            }
         }
         postfix++;
     }
     matrix_sf* ans = copy_matrix((*matrices)->num_rows,(*matrices)->num_cols,(*matrices)->values);
-    if((*matrices)->name=='?'){
-        free(*matrices);
+    while(matrixPointer >= matrices){
+        if((*matrixPointer)->name == '?'){
+            free(*matrixPointer);
+        }
+        matrixPointer--;
     }
     free(expression);
     if(ans == NULL){
