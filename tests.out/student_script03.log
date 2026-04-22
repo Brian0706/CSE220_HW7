@@ -1,0 +1,14 @@
+==53725== Memcheck, a memory error detector
+==53725== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==53725== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==53725== Command: ./bin/execute_script student_script03
+==53725== 
+3 4 2 4 6 8 2 4 6 8 2 4 6 8
+==53725== 
+==53725== HEAP SUMMARY:
+==53725==     in use at exit: 0 bytes in 0 blocks
+==53725==   total heap usage: 13 allocs, 13 frees, 9,171 bytes allocated
+==53725== 
+==53725== All heap blocks were freed -- no leaks are possible
+==53725== 
+==53725== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

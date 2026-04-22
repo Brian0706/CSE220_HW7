@@ -1,0 +1,13 @@
+==53554== Memcheck, a memory error detector
+==53554== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==53554== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==53554== Command: ./bin/free_bst02
+==53554== 
+==53554== 
+==53554== HEAP SUMMARY:
+==53554==     in use at exit: 0 bytes in 0 blocks
+==53554==   total heap usage: 12 allocs, 12 frees, 216 bytes allocated
+==53554== 
+==53554== All heap blocks were freed -- no leaks are possible
+==53554== 
+==53554== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

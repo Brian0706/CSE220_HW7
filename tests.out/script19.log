@@ -1,0 +1,14 @@
+==53471== Memcheck, a memory error detector
+==53471== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==53471== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==53471== Command: ./bin/execute_script script19
+==53471== 
+6 2 33 -6 -22 123 -36 47 63 -127 -65 -142 53 52
+==53471== 
+==53471== HEAP SUMMARY:
+==53471==     in use at exit: 0 bytes in 0 blocks
+==53471==   total heap usage: 15 allocs, 15 frees, 9,224 bytes allocated
+==53471== 
+==53471== All heap blocks were freed -- no leaks are possible
+==53471== 
+==53471== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

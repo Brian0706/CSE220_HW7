@@ -1,0 +1,13 @@
+==53880== Memcheck, a memory error detector
+==53880== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==53880== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==53880== Command: ./bin/student_free06
+==53880== 
+==53880== 
+==53880== HEAP SUMMARY:
+==53880==     in use at exit: 0 bytes in 0 blocks
+==53880==   total heap usage: 26 allocs, 26 frees, 468 bytes allocated
+==53880== 
+==53880== All heap blocks were freed -- no leaks are possible
+==53880== 
+==53880== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

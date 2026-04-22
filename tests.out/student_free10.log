@@ -1,0 +1,13 @@
+==53928== Memcheck, a memory error detector
+==53928== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==53928== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==53928== Command: ./bin/student_free10
+==53928== 
+==53928== 
+==53928== HEAP SUMMARY:
+==53928==     in use at exit: 0 bytes in 0 blocks
+==53928==   total heap usage: 8 allocs, 8 frees, 144 bytes allocated
+==53928== 
+==53928== All heap blocks were freed -- no leaks are possible
+==53928== 
+==53928== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

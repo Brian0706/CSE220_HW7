@@ -1,0 +1,13 @@
+==54099== Memcheck, a memory error detector
+==54099== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==54099== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==54099== Command: ./bin/student_mult05
+==54099== 
+==54099== 
+==54099== HEAP SUMMARY:
+==54099==     in use at exit: 0 bytes in 0 blocks
+==54099==   total heap usage: 3 allocs, 3 frees, 168 bytes allocated
+==54099== 
+==54099== All heap blocks were freed -- no leaks are possible
+==54099== 
+==54099== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

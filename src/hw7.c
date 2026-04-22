@@ -3,7 +3,7 @@
 bst_sf* insert_bst_sf(matrix_sf *mat, bst_sf *root) {
     bst_sf* newNode = malloc(sizeof(bst_sf));
     if(newNode == NULL){
-        return newNode;
+        return root;
     }
     (newNode->mat) = mat;
     (newNode->left_child)=NULL;
@@ -69,6 +69,9 @@ matrix_sf* add_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
         return NULL;
     }
     matrix_sf* result = copy_matrix(mat1->num_rows, mat1->num_cols, mat1->values);
+    if(result == NULL){
+        return result;
+    }
     for(unsigned int i = 0; i < (mat1->num_rows)*(mat1->num_cols);i++){
         *(result->values + i) += *(mat2->values + i);
     }
@@ -247,9 +250,16 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
         }
         postfix++;
     }
-    (*matrices)->name = name;
+    matrix_sf* ans = copy_matrix((*matrices)->num_rows,(*matrices)->num_cols,(*matrices)->values);
+    if(ans == NULL){
+        return NULL;
+    }
+    ans->name=name;
+    if((*matrices)->name=='?'){
+        free(*matrices);
+    }
     free(expression);
-    return *matrices;
+    return ans;
 }
 
 matrix_sf *execute_script_sf(char *filename) {
@@ -290,7 +300,9 @@ matrix_sf *execute_script_sf(char *filename) {
     }
     fclose(script);
     ans = copy_matrix(result->num_rows,result->num_cols,result->values);
-    ans->name = result->name;
+    if(ans != NULL){
+        ans->name = result->name;
+    }
     free_bst_sf(root);
     free(line);
     return ans;
