@@ -2,6 +2,9 @@
 
 bst_sf* insert_bst_sf(matrix_sf *mat, bst_sf *root) {
     bst_sf* newNode = malloc(sizeof(bst_sf));
+    if(newNode == NULL){
+        return NULL;
+    }
     (newNode->mat) = mat;
     (newNode->left_child)=NULL;
     (newNode->right_child)=NULL;
@@ -128,6 +131,9 @@ matrix_sf* create_matrix_sf(char name, const char *expr) {
     unsigned int num_cols = strtol(expr, (char **) &pointer, 10);
     expr = pointer;
     matrix_sf* matrix = malloc(sizeof(matrix_sf)+num_rows*num_cols*sizeof(int));
+    if(matrix == NULL){
+        retur NULL;
+    }
     (matrix->name) = name;
     (matrix->num_rows) = num_rows;
     (matrix->num_cols) = num_cols;
@@ -217,6 +223,9 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
             case '\'':
                 transposed = transpose_mat_sf(*matrixPointer);
                 if((*matrixPointer)->name == '?')free(*matrixPointer);
+                if(matrixPointer == NULL){
+                    *matrices = NULL;
+                }
                 *matrixPointer = transposed;
                 break;
             case '+':
@@ -225,6 +234,9 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
                 matrix_sf* sum = add_mats_sf(operand1, operand2);
                 if((operand1)->name == '?')free(operand1);
                 if((operand2)->name == '?')free(operand2);
+                if(matrixPointer == NULL){
+                    *matrices = NULL;
+                }
                 *matrixPointer = sum;
                 break;
             case '*':
@@ -233,12 +245,18 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
                 matrix_sf* product = mult_mats_sf(operand2, operand1);
                 if((operand1)->name == '?')free(operand1);
                 if((operand2)->name == '?')free(operand2);
+                if(matrixPointer == NULL){
+                    *matrices = NULL;
+                }
                 *matrixPointer = product;
                 break;
             case '\n':
                 break;
             default:
                 matrix = find_bst_sf(*postfix, root);
+                if(matrixPointer == NULL){
+                    *matrices = NULL;
+                }
                 *++matrixPointer = matrix;
                 break;
         }
@@ -273,9 +291,17 @@ matrix_sf *execute_script_sf(char *filename) {
         };
         if(isdigit(*rightSide)){
             result = create_matrix_sf(name, rightSide);
+            if(result == NULL){
+                ans = NULL;
+                break;
+            }
         }
         else{
             result = evaluate_expr_sf(name, rightSide, root);
+            if(result == NULL){
+                ans = NULL;
+                break;
+            }
         }
         root = insert_bst_sf(result, root);
     }
