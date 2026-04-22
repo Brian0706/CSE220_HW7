@@ -58,12 +58,8 @@ void free_bst_sf(bst_sf *root) {
     if(root == NULL){
         return;
     }
-    if(root->left_child != NULL){
-        free_bst_sf(root->left_child);
-    }
-    if(root->right_child != NULL){
-        free_bst_sf(root->right_child);
-    }
+    free_bst_sf(root->left_child);
+    free_bst_sf(root->right_child);
     free(root->mat);
     free(root);
 }
@@ -283,6 +279,12 @@ matrix_sf *execute_script_sf(char *filename) {
         }
         else{
             result = evaluate_expr_sf(name, rightSide, root);
+        }
+        if(result == NULL){
+            fclose(script);
+            free_bst_sf(root);
+            free(line);
+            return NULL;
         }
         root = insert_bst_sf(result, root);
     }
