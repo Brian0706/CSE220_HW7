@@ -252,6 +252,7 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
     }
     matrix_sf* ans = copy_matrix((*matrices)->num_rows,(*matrices)->num_cols,(*matrices)->values);
     if(ans == NULL){
+        free(expression);
         return NULL;
     }
     ans->name=name;
