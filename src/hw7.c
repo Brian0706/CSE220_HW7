@@ -217,7 +217,9 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
     matrix_sf* operand1;
     matrix_sf* operand2;
     matrix_sf* transposed;
+    matrix_sf* sum;
     matrix_sf* matrix;
+    matrix_sf* product;
     while(*postfix){
         switch(*postfix){
             case '\'':
@@ -228,7 +230,7 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
             case '+':
                 operand1 = *matrixPointer--;
                 operand2 = *matrixPointer;
-                matrix_sf* sum = add_mats_sf(operand1, operand2);
+                sum = add_mats_sf(operand1, operand2);
                 if((operand1)->name == '?')free(operand1);
                 if((operand2)->name == '?')free(operand2);
                 *matrixPointer = sum;
@@ -236,7 +238,7 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
             case '*':
                 operand1 = *matrixPointer--;
                 operand2 = *matrixPointer;
-                matrix_sf* product = mult_mats_sf(operand2, operand1);
+                product = mult_mats_sf(operand2, operand1);
                 if((operand1)->name == '?')free(operand1);
                 if((operand2)->name == '?')free(operand2);
                 *matrixPointer = product;
