@@ -281,7 +281,7 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
         }
         postfix++;
     }
-    matrix_sf* ans = copy_matrix((*matrices)->num_rows,(*matrices)->num_cols,(*matrices)->values);
+    matrix_sf* ans = copy_matrix((*matrixPointer)->num_rows,(*matrixPointer)->num_cols,(*matrixPointer)->values);
     clearStack(matrixPointer, matrices);
     free(expression);
     if(ans == NULL){
