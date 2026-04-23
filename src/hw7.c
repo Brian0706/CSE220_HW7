@@ -1,4 +1,17 @@
 #include "hw7.h"
+/*
+    Name: Brian Chau
+    SBU ID: 116125954
+*/
+
+void clearStack(matrix_sf** stackPointer, matrix_sf** stack){
+    while(stackPointer >= stack){
+        if((*stackPointer)->name == '?'){
+            free(*stackPointer);
+        }
+        stackPointer--;
+    }
+}
 
 bst_sf* insert_bst_sf(matrix_sf *mat, bst_sf *root) {
     bst_sf* newNode = malloc(sizeof(bst_sf));
@@ -210,16 +223,16 @@ char* infix2postfix_sf(char *infix) {
 
 matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
     char* postfix = infix2postfix_sf(expr);
+    if(postfix == NULL){
+        return NULL;
+    }
     /*Saved so that I can free the string later*/
     char* expression = postfix;
     matrix_sf* matrices[strlen(expr) + 1];
     matrix_sf** matrixPointer = matrices - 1;
     matrix_sf* operand1;
     matrix_sf* operand2;
-    matrix_sf* transposed;
-    matrix_sf* sum;
     matrix_sf* matrix;
-    matrix_sf* product;
     while(*postfix){
         if(isalpha(*postfix)){
             matrix = find_bst_sf(*postfix, root);
@@ -227,25 +240,40 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
         }else{
             switch(*postfix){
                 case '\'':
-                    transposed = transpose_mat_sf(*matrixPointer);
+                    matrix = transpose_mat_sf(*matrixPointer);
                     if((*matrixPointer)->name == '?')free(*matrixPointer);
-                    *matrixPointer = transposed;
+                    if(matrix == NULL){
+                        clearStack(matrixPointer, matrices);
+                        free(expression);
+                        return NULL;
+                    }
+                    *matrixPointer = matrix;
                     break;
                 case '+':
                     operand1 = *matrixPointer--;
                     operand2 = *matrixPointer;
-                    sum = add_mats_sf(operand1, operand2);
+                    matrix = add_mats_sf(operand1, operand2);
                     if((operand1)->name == '?')free(operand1);
                     if((operand2)->name == '?')free(operand2);
-                    *matrixPointer = sum;
+                    if(matrix == NULL){
+                        clearStack(matrixPointer, matrices);
+                        free(expression);
+                        return NULL;
+                    }
+                    *matrixPointer = matrix;
                     break;
                 case '*':
                     operand1 = *matrixPointer--;
                     operand2 = *matrixPointer;
-                    product = mult_mats_sf(operand2, operand1);
+                    matrix = mult_mats_sf(operand2, operand1);
                     if((operand1)->name == '?')free(operand1);
                     if((operand2)->name == '?')free(operand2);
-                    *matrixPointer = product;
+                    if(matrix == NULL){
+                        clearStack(matrixPointer, matrices);
+                        free(expression);
+                        return NULL;
+                    }
+                    *matrixPointer = matrix;
                     break;
                 default:
                     break;
@@ -254,12 +282,7 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
         postfix++;
     }
     matrix_sf* ans = copy_matrix((*matrices)->num_rows,(*matrices)->num_cols,(*matrices)->values);
-    while(matrixPointer >= matrices){
-        if((*matrixPointer)->name == '?'){
-            free(*matrixPointer);
-        }
-        matrixPointer--;
-    }
+    clearStack(matrixPointer, matrices);
     free(expression);
     if(ans == NULL){
         return NULL;
