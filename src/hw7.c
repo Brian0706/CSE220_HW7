@@ -241,12 +241,12 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
             switch(*postfix){
                 case '\'':
                     matrix = transpose_mat_sf(*matrixPointer);
-                    if((*matrixPointer)->name == '?')free(*matrixPointer);
                     if(matrix == NULL){
                         clearStack(matrixPointer, matrices);
                         free(expression);
                         return NULL;
                     }
+                    if((*matrixPointer)->name == '?')free(*matrixPointer);
                     *matrixPointer = matrix;
                     break;
                 case '+':
@@ -254,12 +254,12 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
                     operand2 = *matrixPointer;
                     matrix = add_mats_sf(operand1, operand2);
                     if((operand1)->name == '?')free(operand1);
-                    if((operand2)->name == '?')free(operand2);
                     if(matrix == NULL){
                         clearStack(matrixPointer, matrices);
                         free(expression);
                         return NULL;
                     }
+                    if((operand2)->name == '?')free(operand2);
                     *matrixPointer = matrix;
                     break;
                 case '*':
@@ -267,12 +267,12 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
                     operand2 = *matrixPointer;
                     matrix = mult_mats_sf(operand2, operand1);
                     if((operand1)->name == '?')free(operand1);
-                    if((operand2)->name == '?')free(operand2);
                     if(matrix == NULL){
                         clearStack(matrixPointer, matrices);
                         free(expression);
                         return NULL;
                     }
+                    if((operand2)->name == '?')free(operand2);
                     *matrixPointer = matrix;
                     break;
                 default:
