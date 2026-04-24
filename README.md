@@ -16,14 +16,14 @@ due to different sizes for certain types. As a result, even if the code worked a
 error due to valgrind writing down different stuff in its memcheck. Therefore, I have opt'ed to follow the format of the unit test 
 cases. 
 
--Just like the unit_tests.c the bst is not freed for the insert and find_bst functions. This is because free_bst is not yet tested
-  -If free_bst was erroneous, this would cause the insert_bst and find_bst functions to fail which could be a false positive if insert and find actually worked.
+-Just like the unit_tests.c the bst is not freed for the insert, find_bst functions as well as evaluate_expr. This is because free_bst is not yet tested
+  -If free_bst was erroneous, this would cause the insert_bst and find_bst functions as well as evaluate_expr to fail which could be a false positive if insert and find actually worked.
 
 There are some diffences in my test cases compared to the unit_tests
 -For evaluate_expr_sf's tests, student_tests also checks the name of the returned matrix. This is to ensure that 
 everything is propery set, including the name of the matrix, not just it content.
 
-- infix2postfix, evaluate_expr and create_matrix test cases free their result after the test ends in student_tests. This is to ensure that no memory 
+- infix2postfix and create_matrix test cases free their result after the test ends in student_tests. This is to ensure that no memory 
 leaks as the tests go on. 
   - These do not affect the final result as the free happens after test is completed
 
