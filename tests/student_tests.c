@@ -963,9 +963,17 @@ Test(infix2postfix_test, infix2postfix10, .description="Convert an infix express
     free(actual);
 }
 
-Test(infix2postfix_test, infix2postfix11, .description="Test associativity") {
+Test(infix2postfix_test, infix2postfix11, .description="Test associativity of addition") {
     char *actual = infix2postfix_sf("A+B+C");
     char *expected = "AB+C+";
+    cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
+        actual, expected);
+    free(actual);
+}
+
+Test(infix2postfix_test, infix2postfix12, .description="Test associativity of multiplication") {
+    char *actual = infix2postfix_sf("A*B*C");
+    char *expected = "AB*C*";
     cr_expect_arr_eq(actual, expected, strlen(expected), "The returned postfix expression was %s, but it should have been %s",
         actual, expected);
     free(actual);
