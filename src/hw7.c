@@ -106,7 +106,7 @@ matrix_sf* add_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
     unsigned int length = (mat1->num_rows)*(mat1->num_cols);
     /*Loop to do matrix addition*/
     for(unsigned int i = 0; i < length;i++){
-        *(result->values + i) += *(mat2->values + i);
+        result->values[i] += mat2->values[i];
     }
     return result;
 }
@@ -127,16 +127,17 @@ matrix_sf* mult_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
     result->name = '?';
     result->num_rows = mat1->num_rows;
     result->num_cols = mat2->num_cols;
-    /*Initalize the values array to 0*/
-    memset(result->values, 0, mat1->num_rows*mat2->num_cols*sizeof(int));
+    int value = 0;
     /*Performs matrix multiplication*/
     for(unsigned int i = 0; i < mat1->num_rows; i++){
         for(unsigned int j = 0; j < mat2->num_cols; j++){
+            value = 0;
             for(unsigned int k = 0; k < mat1->num_cols;k++){
-                int mat1Val = *(mat1->values + i*mat1->num_cols + k);
-                int mat2Val = *(mat2->values + k * mat2->num_cols + j);
-                *(result->values + i * result->num_cols + j) += mat1Val * mat2Val;
+                int mat1Val = mat1->values[i*mat1->num_cols + k];
+                int mat2Val = mat2->values[k * mat2->num_cols + j];
+                value += mat1Val * mat2Val;
             }
+            result->values[i * result->num_cols + j] = value;
         }
     }
     return result;
@@ -155,7 +156,7 @@ matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
     /*Tranpose the matrix mat*/
     for(unsigned int i = 0; i < mat->num_rows; i++){
         for(unsigned int j = 0; j < mat->num_cols;j++){
-            *(result->values+j*result->num_cols+i) = *(mat->values+i*mat->num_cols+j);
+            result->values[j*result->num_cols+i] = mat->values[i*mat->num_cols+j];
         }
     }
     return result;
@@ -208,7 +209,7 @@ char* infix2postfix_sf(char *infix) {
     /*Create the stack*/
     char operations[strlen(infix) + 1];
     /*
-    This pointer lets us navigate the stack.
+    This integer indicates the top of the stack
     When operationIndex < 0, this indicates the stack is empty
     */
     int operationIndex = -1;
@@ -221,7 +222,7 @@ char* infix2postfix_sf(char *infix) {
     char *pointer = result;
     /*Goes left to right through expression since it has left associativity*/
     while(*infix){
-        if(isspace(*infix)){
+        if(isspace((unsigned int) *infix)){
             infix++;
             continue;
         }
