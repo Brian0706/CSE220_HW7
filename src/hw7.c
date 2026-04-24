@@ -412,6 +412,7 @@ matrix_sf *execute_script_sf(char *filename) {
             /*If insert failed, free memory then exit*/
             fclose(script);
             free_bst_sf(root);
+            free(result);
             free(line);
             return NULL;
         }
