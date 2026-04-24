@@ -416,10 +416,6 @@ matrix_sf *execute_script_sf(char *filename) {
         }
     }
     fclose(script);
-    /*In case script is just an empty file*/
-    if(result == NULL){
-        return NULL;
-    }
     /*Get the matrix that was last created and return it*/
     ans = copy_matrix(result->num_rows,result->num_cols,result->values);
     if(ans != NULL){
