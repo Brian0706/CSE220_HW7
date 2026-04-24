@@ -301,6 +301,11 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
         /*Checks if the character is an operand*/
         if(isalpha(*postfix)){
             matrix = find_bst_sf(*postfix, root);
+            if(matrix == NULL){
+                clearStack(matrixPointer, matrices);
+                free(expression);
+                return NULL;
+            }
             *++matrixPointer = matrix;
         }else{
             /*Check if the character is an operator then perform that operation*/
@@ -390,7 +395,7 @@ matrix_sf *execute_script_sf(char *filename) {
         /*Go past starting spaces*/
         while(*rightSide == ' '){
             rightSide++;
-        };
+        }
         /*If there is a digit, indicates that we are creating a matrix*/
         if(isdigit(*rightSide)){
             result = create_matrix_sf(name, rightSide);
