@@ -103,8 +103,9 @@ matrix_sf* add_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
     if(result == NULL){
         return result;
     }
+    unsigned int length = (mat1->num_rows)*(mat1->num_cols);
     /*Loop to do matrix addition*/
-    for(unsigned int i = 0; i < (mat1->num_rows)*(mat1->num_cols);i++){
+    for(unsigned int i = 0; i < length;i++){
         *(result->values + i) += *(mat2->values + i);
     }
     return result;
@@ -142,7 +143,7 @@ matrix_sf* mult_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
 }
 
 matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
-    matrix_sf* result = malloc(sizeof(matrix_sf)+mat->num_rows*mat->num_cols*sizeof(int));
+    matrix_sf* result = malloc(sizeof(matrix_sf)+mat->num_cols*mat->num_rows*sizeof(int));
     /*Check if memory allocation fails*/
     if(result == NULL){
         return NULL;
@@ -151,8 +152,6 @@ matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
     result->name = '?';
     result->num_rows = mat->num_cols;
     result->num_cols = mat->num_rows;
-    /*Initalize the values array to 0*/
-    memset(result->values, 0, mat->num_rows*mat->num_cols*sizeof(int));
     /*Tranpose the matrix mat*/
     for(unsigned int i = 0; i < mat->num_rows; i++){
         for(unsigned int j = 0; j < mat->num_cols;j++){
