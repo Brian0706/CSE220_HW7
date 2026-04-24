@@ -228,7 +228,7 @@ char* infix2postfix_sf(char *infix) {
     while(*infix){
         switch(*infix){
             /*Goes through each possible operator*/
-            case '\'':\
+            case '\'':
                 /*Pops out operations with higher precedence that are in the stack*/
                 while(operationPointer >= operations && *operationPointer == '\''){
                     *pointer++ = *operationPointer--;
@@ -407,6 +407,14 @@ matrix_sf *execute_script_sf(char *filename) {
         }
         /*Insert the new matrix into the bst*/
         root = insert_bst_sf(result, root);
+        /*Check if bst added in node successfully*/
+        if(!find_bst_sf(result->name,root)){
+            /*If insert failed, free memory then exit*/
+            fclose(script);
+            free_bst_sf(root);
+            free(line);
+            return NULL;
+        }
     }
     fclose(script);
     /*Get the matrix that was last created and return it*/
