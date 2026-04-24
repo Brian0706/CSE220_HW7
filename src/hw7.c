@@ -5,12 +5,12 @@
 */
 
 /*This function clears the stack for evaluate_expr*/
-void clearStack(matrix_sf** stackPointer, matrix_sf** stack){
-    while(stackPointer >= stack){
-        if((*stackPointer)->name == '?'){
-            free(*stackPointer);
+void clearStack(int currentTop, matrix_sf** stack){
+    while(currentTop >= 0){
+        if((stack[currentTop])->name == '?'){
+            free(stack[currentTop]);
         }
-        stackPointer--;
+        currentTop--;
     }
 }
 
@@ -134,7 +134,7 @@ matrix_sf* mult_mats_sf(const matrix_sf *mat1, const matrix_sf *mat2) {
             for(unsigned int k = 0; k < mat1->num_cols;k++){
                 int mat1Val = *(mat1->values + i*mat1->num_cols + k);
                 int mat2Val = *(mat2->values + k * mat2->num_cols + j);
-                *(result->values + i * mat2->num_cols + j) += mat1Val * mat2Val;
+                *(result->values + i * result->num_cols + j) += mat1Val * mat2Val;
             }
         }
     }
@@ -164,18 +164,15 @@ matrix_sf* transpose_mat_sf(const matrix_sf *mat) {
 
 matrix_sf* create_matrix_sf(char name, const char *expr) {
     /*Create a pointer so that we can use strtol*/
-    const char* pointer = expr;
-    /*
-    * Use strtol to read the num_rows, value has to be type casted since strtol returns a long
-    */
-    unsigned int num_rows = (unsigned int) strtol(expr, (char **) &pointer, 10);
+    char* pointer;
+    /*Use strtol to read the num_rows*/
+    unsigned int num_rows = (unsigned int) strtoul(expr, &pointer, 10);
     expr = pointer;
     /*This loop is used to skip past the spaces*/
-    while(*expr == ' '){
+    while(isspace((unsigned char) *expr)){
         expr++;
-    };
-    pointer = expr;
-    unsigned int num_cols = (unsigned int) strtol(expr, (char **) &pointer, 10);
+    }
+    unsigned int num_cols = (unsigned int) strtoul(expr, &pointer, 10);
     expr = pointer;
     matrix_sf* matrix = malloc(sizeof(matrix_sf)+num_rows*num_cols*sizeof(int));
     /*Check if memory allocation has failed*/
@@ -192,19 +189,18 @@ matrix_sf* create_matrix_sf(char name, const char *expr) {
     */
     expr = strchr(expr, '[') + 1;
     /*There can be more spaces so we check*/
-    while(*expr == ' '){
+    while(isspace((unsigned char) *expr)){
         expr++;
-    };
-    pointer = expr;
-    for(unsigned int i = 0; i < num_rows * num_cols; i++){
+    }
+    unsigned int matrix_size = num_rows * num_cols;
+    for(unsigned int i = 0; i < matrix_size; i++){
         /*Read a number then set the corresponding value in values array*/
-        int num = (int) strtol(expr, (char **) &pointer, 10);
-        *(matrix->values+i) = num;
+        int num = (int) strtol(expr, &pointer, 10);
+        matrix->values[i] = num;
         expr = pointer;
-        while(*expr == ' ' || *expr == ';'){
+        while(isspace((unsigned char) *expr) || *expr == ';'){
             expr++;
         };
-        pointer = expr;
     }
     return matrix;
 }
@@ -214,9 +210,9 @@ char* infix2postfix_sf(char *infix) {
     char operations[strlen(infix) + 1];
     /*
     This pointer lets us navigate the stack.
-    When operationPointer < operations, this indicates the stack is empty
+    When operationIndex < 0, this indicates the stack is empty
     */
-    char *operationPointer = operations-1;
+    int operationIndex = -1;
     char *result = calloc(strlen(infix) + 1,1);
     /*Check if memory allocation has failed.*/
     if(result == NULL){
@@ -226,45 +222,42 @@ char* infix2postfix_sf(char *infix) {
     char *pointer = result;
     /*Goes left to right through expression since it has left associativity*/
     while(*infix){
+        if(isspace(*infix)){
+            infix++;
+            continue;
+        }
         switch(*infix){
             /*Goes through each possible operator*/
             case '\'':
                 /*Pops out operations with higher precedence that are in the stack*/
-                while(operationPointer >= operations && *operationPointer == '\''){
-                    *pointer++ = *operationPointer--;
+                while(operationIndex >= 0 && operations[operationIndex] == '\''){
+                    *pointer++ = operations[operationIndex--];
                 }
                 /*Add operator to operator stack*/
-                *++operationPointer = *infix++;
+                operations[++operationIndex] = *infix++;
                 break;
             case '+':
-                while(operationPointer >= operations && *operationPointer != '('){
-                    *pointer++ = *operationPointer--;
+                while(operationIndex >= 0 && operations[operationIndex] != '('){
+                    *pointer++ = operations[operationIndex--];
                 }
-                *++operationPointer = *infix++;
+                operations[++operationIndex] = *infix++;
                 break;
             case '*':
-                while(operationPointer >= operations && *operationPointer != '+' && *operationPointer != '('){
-                    *pointer++ = *operationPointer--;
+                while(operationIndex >= 0 && operations[operationIndex] != '+' && operations[operationIndex] != '('){
+                    *pointer++ = operations[operationIndex--];
                 }
-                *++operationPointer = *infix++;
+                operations[++operationIndex] = *infix++;
                 break;
             case ')':
-                while(operationPointer >= operations && *operationPointer != '('){
-                    *pointer++ = *operationPointer--;
+                while(operationIndex >= 0 && operations[operationIndex] != '('){
+                    *pointer++ = operations[operationIndex--];
                 }
                 /*This ensures that the ( is not written to the expression*/
-                operationPointer--;
+                operationIndex--;
                 infix++;
                 break;
             case '(':
-                *++operationPointer = *infix++;
-                break;
-            /*These two cases ensure that ' ' and \n are not written into the postfix expression*/
-            case ' ':
-                infix++;
-                break;
-            case '\n':
-                infix++;
+                operations[++operationIndex] = *infix++;
                 break;
             default:
                 /*Ensures that operands are written in the correct order*/
@@ -272,8 +265,8 @@ char* infix2postfix_sf(char *infix) {
         }
     }
     /*Pops every remaining operand out of the stack and writes it to the expression*/
-    while(operationPointer >= operations){
-        *pointer++ = *operationPointer--;
+    while(operationIndex >= 0){
+        *pointer++ = operations[operationIndex--];
     }
     /*Add null terminator to end of the postfix expression.*/
     *pointer = '\0';
@@ -290,70 +283,70 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
     /*Saved so that I can free the string later*/
     char* expression = postfix;
     /*Stack of operands*/
-    matrix_sf* matrices[strlen(expr) + 1];
-    /*Pointer to navigate stack*/
-    matrix_sf** matrixPointer = matrices - 1;
+    matrix_sf* matrices[strlen(postfix) + 1];
+    /*Current index the stack is at*/
+    int matrixIndex = -1;
     matrix_sf* operand1;
     matrix_sf* operand2;
     matrix_sf* matrix;
     /*Go through and evaluate the expression*/
     while(*postfix){
         /*Checks if the character is an operand*/
-        if(isalpha(*postfix)){
+        if(isalpha((unsigned char) *postfix)){
             matrix = find_bst_sf(*postfix, root);
             if(matrix == NULL){
-                clearStack(matrixPointer, matrices);
+                clearStack(matrixIndex, matrices);
                 free(expression);
                 return NULL;
             }
-            *++matrixPointer = matrix;
+            matrices[++matrixIndex] = matrix;
         }else{
             /*Check if the character is an operator then perform that operation*/
             switch(*postfix){
                 case '\'':
-                    matrix = transpose_mat_sf(*matrixPointer);
+                    matrix = transpose_mat_sf(matrices[matrixIndex]);
                     /*If the function failed, free memory then immediately exit.*/
                     if(matrix == NULL){
-                        clearStack(matrixPointer, matrices);
+                        clearStack(matrixIndex, matrices);
                         free(expression);
                         return NULL;
                     }
                     //This is an else statement to prevent double freeing
-                    else if((*matrixPointer)->name == '?'){
-                        free(*matrixPointer);
+                    else if((matrices[matrixIndex])->name == '?'){
+                        free(matrices[matrixIndex]);
                     }
-                    *matrixPointer = matrix;
+                    matrices[matrixIndex] = matrix;
                     break;
                 case '+':
-                    operand1 = *matrixPointer--;
-                    operand2 = *matrixPointer;
+                    operand1 = matrices[matrixIndex--];
+                    operand2 = matrices[matrixIndex];
                     matrix = add_mats_sf(operand1, operand2);
-                    /*This is done first as matrixPointer is before operand1*/
+                    /*This is done first as matrices[matrixIndex] is before operand1*/
                     if((operand1)->name == '?')free(operand1);
                     if(matrix == NULL){
-                        clearStack(matrixPointer, matrices);
+                        clearStack(matrixIndex, matrices);
                         free(expression);
                         return NULL;
                     }
                     else if((operand2)->name == '?'){
                         free(operand2);
                     }
-                    *matrixPointer = matrix;
+                    matrices[matrixIndex] = matrix;
                     break;
                 case '*':
-                    operand1 = *matrixPointer--;
-                    operand2 = *matrixPointer;
+                    operand1 = matrices[matrixIndex--];
+                    operand2 = matrices[matrixIndex];
                     matrix = mult_mats_sf(operand2, operand1);
                     if((operand1)->name == '?')free(operand1);
                     if(matrix == NULL){
-                        clearStack(matrixPointer, matrices);
+                        clearStack(matrixIndex, matrices);
                         free(expression);
                         return NULL;
                     }
                     else if((operand2)->name == '?'){
                         free(operand2);
                     }
-                    *matrixPointer = matrix;
+                    matrices[matrixIndex] = matrix;
                     break;
                 default:
                     break;
@@ -362,8 +355,8 @@ matrix_sf* evaluate_expr_sf(char name, char *expr, bst_sf *root) {
         postfix++;
     }
     /*Copy the top of the stack into answers*/
-    matrix_sf* ans = copy_matrix((*matrixPointer)->num_rows,(*matrixPointer)->num_cols,(*matrixPointer)->values);
-    clearStack(matrixPointer, matrices);
+    matrix_sf* ans = copy_matrix((matrices[matrixIndex])->num_rows,(matrices[matrixIndex])->num_cols,(matrices[matrixIndex])->values);
+    clearStack(matrixIndex, matrices);
     free(expression);
     /*Check if the copy failed*/
     if(ans == NULL){
@@ -387,17 +380,17 @@ matrix_sf *execute_script_sf(char *filename) {
     bst_sf* root = NULL;
     matrix_sf* ans;
     /*Reads a line and checks if eof has been reached*/
-    while(getline(&line,&max_line_size, script) != EOF){
+    while(getline(&line,&max_line_size, script) != -1){
         name = line[0];
         /*Check the right side of the statement to see what to do*/
         rightSide = strchr(line, '=');
         rightSide++;
         /*Go past starting spaces*/
-        while(*rightSide == ' '){
+        while(isspace((unsigned char) *rightSide)){
             rightSide++;
         }
         /*If there is a digit, indicates that we are creating a matrix*/
-        if(isdigit(*rightSide)){
+        if(isdigit((unsigned char) *rightSide)){
             result = create_matrix_sf(name, rightSide);
         }
         else{
@@ -423,6 +416,10 @@ matrix_sf *execute_script_sf(char *filename) {
         }
     }
     fclose(script);
+    /*In case script is just an empty file*/
+    if(result == NULL){
+        return NULL;
+    }
     /*Get the matrix that was last created and return it*/
     ans = copy_matrix(result->num_rows,result->num_cols,result->values);
     if(ans != NULL){
