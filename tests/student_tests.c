@@ -969,6 +969,8 @@ Test(evaluate_expr_test, expr01, .description="Given root of a tree, evaluation 
     matrix_sf* result = evaluate_expr_sf('R', "C", root);
     cr_expect_eq(result->name, 'R', "The new matrix did not have the expected name. Actual: %c, Expected: R", result->name);
     expect_matrices_equal(result, 1, 4, (int[]){-123,47,-4,140});
+    free(root);
+    free(result);
 }
 
 Test(evaluate_expr_test, expr02, .description="Given root of a tree, evaluation of a expression of just transpose") {
@@ -976,6 +978,8 @@ Test(evaluate_expr_test, expr02, .description="Given root of a tree, evaluation 
     matrix_sf* result = evaluate_expr_sf('R', "C'", root);
     cr_expect_eq(result->name, 'R', "The new matrix did not have the expected name. Actual: %c, Expected: R", result->name);
     expect_matrices_equal(result, 4, 1, (int[]){-123,47,-4,140});
+    free(root);
+    free(result);
 }
 
 Test(evaluate_expr_test, expr03, .description="Given root of a tree, evaluation of a expression of just addition") {
@@ -983,6 +987,8 @@ Test(evaluate_expr_test, expr03, .description="Given root of a tree, evaluation 
     matrix_sf* result = evaluate_expr_sf('R', "C+D", root);
     cr_expect_eq(result->name, 'R', "The new matrix did not have the expected name. Actual: %c, Expected: R", result->name);
     expect_matrices_equal(result, 1, 4, (int[]){-139,169,131,247});
+    free(root);
+    free(result);
 }
 
 Test(evaluate_expr_test, expr04, .description="Given root of a tree, evaluation of a expression of just multiplication") {
@@ -990,6 +996,8 @@ Test(evaluate_expr_test, expr04, .description="Given root of a tree, evaluation 
     matrix_sf* result = evaluate_expr_sf('R', "D*I", root);
     cr_expect_eq(result->name, 'R', "The new matrix did not have the expected name. Actual: %c, Expected: R", result->name);
     expect_matrices_equal(result, 1, 4, (int[]){-26856,-43106,-5829,-15767});
+    free(root);
+    free(result);
 }
 
 Test(evaluate_expr_test, expr05, .description="Given root of a tree, evaluation of a expression with precedence affecting the result") {
@@ -997,6 +1005,8 @@ Test(evaluate_expr_test, expr05, .description="Given root of a tree, evaluation 
     matrix_sf* result = evaluate_expr_sf('R', "D*I'", root);
     cr_expect_eq(result->name, 'R', "The new matrix did not have the expected name. Actual: %c, Expected: R", result->name);
     expect_matrices_equal(result, 1, 4, (int[]){-14208,-14219,-40265,-3365});
+    free(root);
+    free(result);
 }
 
 Test(evaluate_expr_test, expr06, .description="Given root of a tree, evaluation of a expression with parentheses") {
@@ -1004,6 +1014,8 @@ Test(evaluate_expr_test, expr06, .description="Given root of a tree, evaluation 
     matrix_sf* result = evaluate_expr_sf('R', "(D*I)'", root);
     cr_expect_eq(result->name, 'R', "The new matrix did not have the expected name. Actual: %c, Expected: R", result->name);
     expect_matrices_equal(result, 4, 1, (int[]){-26856,-43106,-5829,-15767});
+    free(root);
+    free(result);
 }
 
 Test(evaluate_expr_test, expr07, .description="Given root of a tree, evaluation of a expression with precedence affecting the result") {
@@ -1011,6 +1023,8 @@ Test(evaluate_expr_test, expr07, .description="Given root of a tree, evaluation 
     matrix_sf* result = evaluate_expr_sf('R', "D*I'+C", root);
     cr_expect_eq(result->name, 'R', "The new matrix did not have the expected name. Actual: %c, Expected: R", result->name);
     expect_matrices_equal(result, 1, 4, (int[]){-14331,-14172,-40269,-3225});
+    free(root);
+    free(result);
 }
 
 Test(evaluate_expr_test, expr08, .description="Given root of a tree, evaluation of a expression with a lot of spaces") {
@@ -1018,6 +1032,8 @@ Test(evaluate_expr_test, expr08, .description="Given root of a tree, evaluation 
     matrix_sf* result = evaluate_expr_sf('R', "(D   * I   ')        +   C", root);
     cr_expect_eq(result->name, 'R', "The new matrix did not have the expected name. Actual: %c, Expected: R", result->name);
     expect_matrices_equal(result, 1, 4, (int[]){-14331,-14172,-40269,-3225});
+    free(root);
+    free(result);
 }
 
 Test(evaluate_expr_test, expr09, .description="Given root of a tree, evaluation of a expression with lots of parentheses that don't do anything") {
@@ -1025,6 +1041,8 @@ Test(evaluate_expr_test, expr09, .description="Given root of a tree, evaluation 
     matrix_sf* result = evaluate_expr_sf('R', "(D*((I))'+C)", root);
     cr_expect_eq(result->name, 'R', "The new matrix did not have the expected name. Actual: %c, Expected: R", result->name);
     expect_matrices_equal(result, 1, 4, (int[]){-14331,-14172,-40269,-3225});
+    free(root);
+    free(result);
 }
 
 Test(evaluate_expr_test, expr10, .description="Given root of a tree, evaluation of a expression with lots of tranposes") {
@@ -1032,6 +1050,8 @@ Test(evaluate_expr_test, expr10, .description="Given root of a tree, evaluation 
     matrix_sf* result = evaluate_expr_sf('R', "D*I'+C''''''", root);
     cr_expect_eq(result->name, 'R', "The new matrix did not have the expected name. Actual: %c, Expected: R", result->name);
     expect_matrices_equal(result, 1, 4, (int[]){-14331,-14172,-40269,-3225});
+    free(root);
+    free(result);
 }
 
 /* execute_script_sf tests */
@@ -1039,7 +1059,7 @@ Test(execute_test, one_matrix01){ run_script_without_valgrind("student_script01"
 Test(execute_test_valgrind, one_matrix01) { expect_no_valgrind_errors(run_script_with_valgrind("student_script01")); }
 
 Test(execute_test, multiple_expressions01){ run_script_without_valgrind("student_script02"); }
-Test(execute_test_valgrind, multiple_expressions02) { expect_no_valgrind_errors(run_script_with_valgrind("student_script02")); }
+Test(execute_test_valgrind, multiple_expressions01) { expect_no_valgrind_errors(run_script_with_valgrind("student_script02")); }
 
 Test(execute_test, add_matrices01){ run_script_without_valgrind("student_script03"); }
 Test(execute_test_valgrind, add_matrices01) { expect_no_valgrind_errors(run_script_with_valgrind("student_script03")); }

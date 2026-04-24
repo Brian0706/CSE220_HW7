@@ -23,6 +23,7 @@ There are some diffences in my test cases compared to the unit_tests
 -For evaluate_expr_sf's tests, student_tests also checks the name of the returned matrix. This is to ensure that 
 everything is propery set, including the name of the matrix, not just it content.
 
-- infix2postfix and create_matrix test cases free their result after the test ends. This is to ensure that no memory 
-leaks as the tests go on.
+- infix2postfix, evaluate_expr and create_matrix test cases free their result after the test ends in student_tests. This is to ensure that no memory 
+leaks as the tests go on. 
+  - These do not affect the final result as the free happens after test is completed
 
